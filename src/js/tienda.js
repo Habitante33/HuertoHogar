@@ -188,12 +188,25 @@ function crearTarjetaProductoHTML(p, isDestacado = false) {
         <span class="fw-bold fs-5 text-success">$${p.precio.toLocaleString("es-CL")} CLP</span>
     `;
 
+    // Obtener cantidad de este producto ya agregada al carrito
+    let cantidadEnCarrito = 0;
+    try {
+        const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+        const itemEnCarrito = carrito.find(item => item.id === p.id);
+        if (itemEnCarrito) {
+            cantidadEnCarrito = itemEnCarrito.cantidad;
+        }
+    } catch (e) {
+        console.error("Error al obtener cantidad en carrito:", e);
+    }
+    const stockDisponible = Math.max(0, p.stock - cantidadEnCarrito);
+
     const contentCatalogo = `
         <p class="card-text text-muted text-truncate">${p.descripcion}</p>
         <div class="mt-auto">
             <div class="d-flex justify-content-between align-items-center mb-2">
                 ${priceHtmlCatalogo}
-                <span class="text-xs text-muted">Stock: ${p.stock}</span>
+                <span class="text-xs text-muted">Stock: ${stockDisponible}</span>
             </div>
             <div class="row g-2 mt-2">
                 <div class="col-6">

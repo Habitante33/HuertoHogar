@@ -220,5 +220,37 @@ window.agregarAlCarrito = function(id, cantidad) {
     if (typeof actualizarBadgeCarritoComun === "function") {
         actualizarBadgeCarritoComun();
     }
+
+    // Actualizar visualmente el stock en catálogo en tiempo real
+    if (typeof renderizarProductosDestacados === "function") {
+        renderizarProductosDestacados();
+    }
+    if (typeof renderizarCatalogo === "function") {
+        const buscador = document.getElementById("buscador-producto");
+        const cat = typeof catActiva !== "undefined" ? catActiva : "Todos";
+        renderizarCatalogo(cat, buscador ? buscador.value : "");
+    }
+
+    // Actualizar visualmente el stock en la vista de detalle si existe el elemento
+    const detStockEl = document.getElementById("det-stock");
+    if (detStockEl) {
+        const stockDisp = Math.max(0, prod.stock - cantidadSolicitada);
+        detStockEl.textContent = `${stockDisp} unidades`;
+        
+        // Sincronizar alerta de stock crítico en detalle
+        const alertaStock = document.getElementById("det-alerta-stock");
+        if (alertaStock) {
+            if (stockDisp <= prod.stockCritico) {
+                alertaStock.innerHTML = `
+                    <div class="alert alert-warning py-2 mb-3" role="alert" style="font-size: 0.85rem;">
+                        ⚠️ <b>¡Advertencia de Stock Crítico!</b> Solo quedan ${stockDisp} unidades disponibles en inventario.
+                    </div>
+                `;
+            } else {
+                alertaStock.innerHTML = "";
+            }
+        }
+    }
+
     alert(`¡Se agregaron ${cantidad} unidades de ${prod.nombre} al carrito!`);
 }
