@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HuertoHogar - Blog & Noticias</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+    <!-- Estilos Propios -->
+    <link rel="stylesheet" href="../css/estilos.css">
+    <style>
+        .hover-dark-green:hover {
+            color: #1a5c37 !important;
+            text-decoration: underline !important;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR (Direct Embed for file:// compatibility) -->
+    <nav class="navbar navbar-expand-lg navbar-hh sticky-top py-3">
+        <div class="container">
+            <a class="navbar-brand navbar-brand-hh d-flex align-items-center gap-2" href="../../index.html">
+                <img src="../assets/imagenes/logoHuerto.jpeg" alt="Logo HuertoHogar" style="height: 40px; border-radius: 6px; object-fit: cover;">
+                <span class="fs-4 fw-bold" style="color: var(--hh-secondary);">HuertoHogar</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link nav-link-hh" href="../../index.html" id="nav-inicio">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-hh" href="productos.html" id="nav-productos">Productos</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-hh" href="../../index.html#nosotros" id="nav-nosotros">Nosotros</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-hh active" href="blog.html" id="nav-blog">Blog</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-hh" href="../../index.html#contacto" id="nav-contacto">Contacto</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-hh" id="admin-nav-link" href="admin.html" style="display: none;"><b>Admin Panel</b></a></li>
+                </ul>
+                <div class="d-flex align-items-center gap-3">
+                    <!-- Selector de Roles para el Docente -->
+                    <div id="role-selector-container"></div>
+
+                    <!-- Carrito Badge -->
+                    <a href="carrito.html" class="btn btn-outline-success position-relative px-3" id="nav-carrito-btn">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        <span id="cart-badge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="display: none;">
+                            0
+                        </span>
+                    </a>
+                    
+                    <!-- Login Button -->
+                    <a href="login.html" class="btn btn-primary-hh" id="nav-login-btn">
+                        <i class="fa-solid fa-user me-1"></i> Mi Cuenta
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HEADER DE SECCIÓN -->
+    <div class="py-4 bg-light border-bottom mb-5">
+        <div class="container text-center">
+            <h1 class="display-5 fw-bold">Alimentación y Vida Sana</h1>
+            <p class="text-muted">Aprende sobre sostenibilidad, recetas del campo y hábitos saludables en nuestro blog.</p>
+        </div>
+    </div>
+
+    <!-- SECCIÓN BLOG -->
+    <section class="py-3 bg-white">
+        <div class="container" style="max-width: 850px;">
+            <!-- Entrada 1 -->
+            <article class="blog-post mb-5 pb-4 border-bottom">
+                <h2 class="blog-post-title mb-1" style="font-family: 'Playfair Display', serif; font-weight: 700; color: #2E8B57; font-size: 2rem; line-height: 1.3;">
+                    Beneficios clave de incorporar verduras orgánicas en tu alimentación diaria
+                </h2>
+                <div class="blog-post-meta text-muted mb-3" style="font-size: 0.9rem;">
+                    junio 15, 2026
+                </div>
+                <div class="blog-post-body text-dark mb-3" style="font-size: 1.05rem; line-height: 1.7; text-align: justify; font-family: 'Montserrat', sans-serif;">
+                    Consumir verduras orgánicas va mucho más allá de una tendencia; es una decisión consciente que impacta directamente en nuestra salud y en la conservación de la tierra. A diferencia de los cultivos tradicionales que dependen de pesticidas y fertilizantes químicos, las verduras ecológicas crecen de forma natural en suelos ricos en nutrientes. Esto se traduce en un aporte significativamente mayor de vitaminas y minerales...
+                </div>
+                <div class="d-flex justify-content-between align-items-center" style="font-size: 0.85rem; font-weight: 600; font-family: 'Montserrat', sans-serif;">
+                    <div>
+                        <a href="#" class="text-success text-decoration-none hover-dark-green" onclick="compartirArticulo('blog2'); return false;">COMPARTIR</a>
+                    </div>
+                    <div>
+                        <a href="#" class="text-success text-decoration-none hover-dark-green" onclick="abrirBlogModal('blog2'); return false;">LEER MÁS</a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Entrada 2 -->
+            <article class="blog-post mb-5 pb-4 border-bottom">
+                <h2 class="blog-post-title mb-1" style="font-family: 'Playfair Display', serif; font-weight: 700; color: #2E8B57; font-size: 2rem; line-height: 1.3;">
+                    Cajas de verduras, hortalizas y frutas ecológicas del jueves 11 de JUNIO de 2026
+                </h2>
+                <div class="blog-post-meta text-muted mb-3" style="font-size: 0.9rem;">
+                    junio 08, 2026
+                </div>
+                <div class="blog-post-body text-dark mb-3" style="font-size: 1.05rem; line-height: 1.7; text-align: justify; font-family: 'Montserrat', sans-serif;">
+                    Tras el parón en los repartos de estas últimas semanas, volvemos de nuevo. La primavera no dejó avanzar los cultivos y hemos tenido un parón de producción, pero parece que por fin nuestra huerta nos regala sus ricos productos de temporada. A ver si empiezan a madurar los tomates, de momento los que hemos podido probar, ya os adelantamos que están deliciosos. ...
+                </div>
+                <div class="d-flex justify-content-between align-items-center" style="font-size: 0.85rem; font-weight: 600; font-family: 'Montserrat', sans-serif;">
+                    <div>
+                        <a href="#" class="text-success text-decoration-none hover-dark-green" onclick="compartirArticulo('blog1'); return false;">COMPARTIR</a>
+                    </div>
+                    <div>
+                        <a href="#" class="text-success text-decoration-none hover-dark-green" onclick="abrirBlogModal('blog1'); return false;">LEER MÁS</a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Entrada 3 -->
+            <article class="blog-post mb-4 pb-4">
+                <h2 class="blog-post-title mb-1" style="font-family: 'Playfair Display', serif; font-weight: 700; color: #2E8B57; font-size: 2rem; line-height: 1.3;">
+                    Propiedades y secretos de la Miel Orgánica de Puerto Varas
+                </h2>
+                <div class="blog-post-meta text-muted mb-3" style="font-size: 0.9rem;">
+                    junio 02, 2026
+                </div>
+                <div class="blog-post-body text-dark mb-3" style="font-size: 1.05rem; line-height: 1.7; text-align: justify; font-family: 'Montserrat', sans-serif;">
+                    Nuestra miel orgánica proviene del sur de Chile, específicamente de las praderas nativas de Puerto Varas. En esta época de frío, la miel no solo endulza tus mañanas de forma natural, sino que actúa como un poderoso escudo protector. Producida bajo estrictos estándares de apicultura sostenible, conserva todas sus propiedades medicinales y enzimas activas intactas. ...
+                </div>
+                <div class="d-flex justify-content-between align-items-center" style="font-size: 0.85rem; font-weight: 600; font-family: 'Montserrat', sans-serif;">
+                    <div>
+                        <a href="#" class="text-success text-decoration-none hover-dark-green" onclick="compartirArticulo('blog3'); return false;">COMPARTIR</a>
+                    </div>
+                    <div>
+                        <a href="#" class="text-success text-decoration-none hover-dark-green" onclick="abrirBlogModal('blog3'); return false;">LEER MÁS</a>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <!-- MODAL DETALLE DE BLOG -->
+    <div class="modal fade" id="modalBlog" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold text-success" id="modal-blog-titulo" style="font-family: 'Playfair Display', serif;">Detalle de Artículo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center mb-3">
+                        <span id="modal-blog-categoria" class="badge"></span>
+                    </div>
+                    
+                    <!-- Contenido del Artículo -->
+                    <div id="modal-blog-contenido" class="fs-6 text-dark lh-lg" style="font-family: 'Montserrat', sans-serif;"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER (Direct Embed for file:// compatibility) -->
+    <footer class="footer-hh py-4 mt-5">
+        <div class="container text-center">
+            <img src="../assets/imagenes/logoHuerto.jpeg" alt="Logo HuertoHogar" style="height: 50px; border-radius: 8px; margin-bottom: 10px; object-fit: cover;">
+            <p class="mb-1 fw-bold text-dark">HuertoHogar Chile</p>
+            <p class="small mb-3">Conectando a las familias chilenas con el campo desde hace más de 6 años.</p>
+            <div class="d-flex justify-content-center gap-3 mb-3 fs-5">
+                <a href="#" class="text-success"><i class="fa-brands fa-facebook"></i></a>
+                <a href="#" class="text-success"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" class="text-success"><i class="fa-brands fa-whatsapp"></i></a>
+            </div>
+            <p class="small text-muted mb-0">© 2026 HuertoHogar.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Scripts Propios -->
+    <script src="../js/datos.js?v=2"></script>
+    <script src="../js/validaciones.js?v=2"></script>
+    <script src="../js/tienda.js?v=2"></script>
+    <script src="../js/carrito.js?v=2"></script>
+    <script src="../js/admin.js?v=2"></script>
+    <script src="../js/main.js?v=2"></script>
+
+    <script>
+        function abrirBlogModal(id) {
+            const modalEl = document.getElementById("modalBlog");
+            const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+            const titulo = document.getElementById("modal-blog-titulo");
+            const categoria = document.getElementById("modal-blog-categoria");
+            const contenido = document.getElementById("modal-blog-contenido");
+
+            if (id === 'blog1') {
+                titulo.textContent = "Cajas de verduras, hortalizas y frutas ecológicas del jueves 11 de JUNIO de 2026";
+                categoria.textContent = "Huerta Ecológica";
+                categoria.className = "badge bg-success text-white px-3 py-2";
+                contenido.innerHTML = `
+                    <p>Tras el parón en los repartos de estas últimas semanas, volvemos de nuevo. La primavera no dejó avanzar los cultivos y hemos tenido un parón de producción, pero parece que por fin nuestra huerta nos regala sus ricos productos de temporada. A ver si empiezan a madurar los tomates, de momento los que hemos podido probar, ya os adelantamos que están deliciosos.</p>
+                    <p>¿te animas a seguir con el propósito de una alimentación saludable y ecológica? Para afrontar este tiempo loco hay que reforzar nuestras defensas. Elige las verduras y hortalizas ecológicas de la huerta de Movera. Elige Huerto Natural.</p>
+                    
+                    <div class="p-3 my-3 bg-light border-start border-4 border-success rounded">
+                        <h5 class="text-success"><i class="fa-solid fa-calendar-check me-2"></i>¡Pide tu caja para el JUEVES 11 de JUNIO!</h5>
+                        <p class="mb-0">Para recibir tu caja de Huerto Natural debes rellenar el formulario de pedido antes del <b>MARTES a las 20h</b>.</p>
+                    </div>
+                `;
+            } else if (id === 'blog2') {
+                titulo.textContent = "Beneficios clave de incorporar verduras orgánicas en tu alimentación diaria";
+                categoria.textContent = "Nutrición y Salud";
+                categoria.className = "badge bg-success text-white px-3 py-2";
+                contenido.innerHTML = `
+                    <p class="lead fw-bold text-success" style="font-family: 'Playfair Display', serif;">Una elección saludable para ti y respetuosa con nuestro planeta</p>
+                    <p>Consumir verduras orgánicas va mucho más allá de una tendencia; es una decisión consciente que impacta directamente en nuestra salud y en la conservación de la tierra. A diferencia de los cultivos tradicionales que dependen de pesticidas y fertilizantes químicos, las verduras ecológicas crecen de forma natural en suelos ricos en nutrientes. Esto no solo se traduce en un sabor mucho más intenso y auténtico, sino también en un aporte significativamente mayor de antioxidantes, vitaminas y minerales esenciales para nuestro organismo.</p>
+                    
+                    <h5 class="mt-4 text-success"><i class="fa-solid fa-heart me-2"></i>¿Por qué preferir verduras ecológicas?</h5>
+                    <ul>
+                        <li><b>Libres de residuos químicos:</b> Al ser cultivadas sin pesticidas sintéticos ni herbicidas tóxicos, evitas la acumulación de trazas químicas en tu cuerpo, protegiendo tu sistema inmunológico y digestivo.</li>
+                        <li><b>Mayor densidad de nutrientes:</b> Al crecer en suelos nutridos de forma natural (compost, abonos orgánicos), las plantas sintetizan mayor cantidad de vitaminas (especialmente vitamina C) y minerales como hierro y magnesio.</li>
+                        <li><b>Sabor y frescura real:</b> Las verduras cosechadas en su punto óptimo de maduración conservan su agua celular y aceites esenciales naturales, logrando texturas firmes y sabores auténticos de campo.</li>
+                        <li><b>Cuidado de la biodiversidad:</b> La agricultura ecológica respeta los ciclos del suelo y protege a los polinizadores locales (abejas, mariposas) esenciales para el equilibrio ambiental.</li>
+                    </ul>
+                    
+                    <div class="p-3 my-3 bg-light border-start border-4 border-success rounded">
+                        <h5 class="text-success"><i class="fa-solid fa-seedling me-2"></i>El secreto está en el suelo</h5>
+                        <p class="mb-0">Un suelo vivo produce plantas fuertes. Al elegir verduras de HuertoHogar, apoyas un modelo de agricultura limpia que protege las napas de agua y restaura la fertilidad natural de los campos chilenos.</p>
+                    </div>
+                    
+                    <p>Incorporar más vegetales orgánicos en tu mesa diaria es el paso más sencillo y efectivo para nutrirte de verdad y disfrutar del sabor natural que solía tener la comida. ¡Elige sano, elige consciente!</p>
+                `;
+            } else if (id === 'blog3') {
+                titulo.textContent = "Propiedades y secretos de la Miel Orgánica de Puerto Varas";
+                categoria.textContent = "Apicultura";
+                categoria.className = "badge bg-warning text-dark px-3 py-2";
+                contenido.innerHTML = `
+                    <p class="lead fw-bold text-success" style="font-family: 'Playfair Display', serif;">Descubre el tesoro dorado de los bosques del sur de Chile</p>
+                    <p>Nuestra miel orgánica proviene del sur de Chile, específicamente de las praderas nativas de Puerto Varas. En esta época de frío, la miel no solo endulza tus mañanas de forma natural, sino que actúa como un poderoso escudo protector. Producida bajo estrictos estándares de apicultura sostenible, conserva todas sus propiedades medicinales y enzimas activas intactas.</p>
+                    
+                    <h5 class="mt-4 text-success"><i class="fa-solid fa-circle-check me-2"></i>Beneficios clave de la Miel de Pradera Nativa:</h5>
+                    <ul>
+                        <li><b>Alto poder antibacterial:</b> Contiene agentes naturales que inhiben el crecimiento bacteriano, excelente para aliviar dolores de garganta y resfriados comunes.</li>
+                        <li><b>Antioxidante natural:</b> Rica en flavonoides y compuestos fenólicos que combaten los radicales libres y previenen el daño celular.</li>
+                        <li><b>Fuente de energía limpia:</b> Sus azúcares simples (fructosa y glucosa) se absorben de manera directa, ideales para deportistas y para comenzar el día.</li>
+                        <li><b>100% Cruda y Sin Filtrar:</b> No la sometemos a procesos de calentamiento industrial, manteniendo todo el polen y propóleo de origen de forma intacta.</li>
+                    </ul>
+                    
+                    <div class="p-3 my-3 bg-light border-start border-4 border-warning rounded">
+                        <h5 class="text-warning-emphasis"><i class="fa-solid fa-leaf me-2"></i>Apicultura Sostenible y Respetuosa</h5>
+                        <p class="mb-0">Trabajamos en conjunto con pequeños apicultores locales que respetan los ciclos naturales de las abejas. No sobreexplotamos las colmenas y aseguramos que tengan suficiente alimento para pasar el invierno.</p>
+                    </div>
+                    
+                    <p>Si deseas incorporar este increíble alimento a tu despensa, agrégalo en tu próximo pedido semanal. ¡Es el complemento perfecto para tus infusiones, pan integral o endulzante de repostería saludable!</p>
+                `;
+            }
+
+            modal.show();
+        }
+
+        // Compartir artículo (copiar mock url al portapapeles)
+        function compartirArticulo(id) {
+            const dummyUrl = window.location.origin + window.location.pathname + "#" + id;
+            navigator.clipboard.writeText(dummyUrl).then(() => {
+                mostrarAlertaToast("¡Enlace copiado al portapapeles! Compártelo con tus amigos.");
+            }).catch(err => {
+                // Fallback por si el portapapeles falla
+                mostrarAlertaToast("Enlace del artículo: " + dummyUrl);
+            });
+        }
+
+        // Mostrar un toast flotante bonito
+        function mostrarAlertaToast(mensaje) {
+            const toastExistente = document.getElementById("hh-toast-alerta");
+            if (toastExistente) {
+                toastExistente.remove();
+            }
+            
+            const toastHtml = `
+                <div id="hh-toast-alerta" class="position-fixed top-0 end-0 p-3" style="z-index: 1080;">
+                    <div class="toast show align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="d-flex">
+                            <div class="toast-body">
+                                <i class="fa-solid fa-circle-check me-2"></i> ${mensaje}
+                            </div>
+                            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close" onclick="this.parentElement.parentElement.parentElement.remove()"></button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', toastHtml);
+            
+            setTimeout(() => {
+                const toast = document.getElementById("hh-toast-alerta");
+                if (toast) {
+                    toast.classList.add("fade");
+                    setTimeout(() => toast.remove(), 600);
+                }
+            }, 3500);
+        }
+    </script>
+</body>
+</html>
