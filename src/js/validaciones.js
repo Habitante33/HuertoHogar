@@ -4,8 +4,8 @@
 function validarRUT(rut) {
     // Quitar espacios y convertir a mayúsculas
     rut = rut.replace(/\s+/g, '').toUpperCase();
-    // Validar formato básico sin puntos ni guion: de 7 a 8 números seguidos de un dígito o K
-    if (!/^[0-9]{7,8}[0-9K]$/.test(rut)) return false;
+    // Validar formato básico sin puntos ni guion: de 6 a 8 números seguidos de un dígito o K (total 7 a 9 caracteres)
+    if (!/^[0-9]{6,8}[0-9K]$/.test(rut)) return false;
     
     const cuerpo = rut.slice(0, -1);
     const dv = rut.slice(-1);
