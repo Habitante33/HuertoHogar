@@ -250,6 +250,29 @@ h1, h2, h3, h4, h5, h6, .card-title {
     background-color: transparent;
 }
 
+/* MI PERFIL */
+#perfil-nombre-display {
+    font-size: 1rem;
+    color: var(--hh-dark);
+}
+
+#form-perfil .input-group-text {
+    background-color: rgba(46, 139, 87, 0.08);
+    border-color: #dee2e6;
+    color: var(--hh-primary);
+    font-weight: 600;
+}
+
+#btn-guardar-perfil {
+    transition: all 0.25s ease;
+    letter-spacing: 0.3px;
+}
+
+#btn-guardar-perfil:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(46, 139, 87, 0.3);
+}
+
 /* BLOG */
 .blog-entry {
     border-bottom: 1px solid #e9ecef;

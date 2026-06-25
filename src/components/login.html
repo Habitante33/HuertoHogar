@@ -80,6 +80,11 @@
                         Registrarse
                     </button>
                 </li>
+                <li class="nav-item" role="presentation" id="perfil-tab-item" style="display: none;">
+                    <button class="nav-link rounded fw-bold" id="perfil-tab" data-bs-toggle="tab" data-bs-target="#tab-perfil" type="button" role="tab" aria-controls="tab-perfil" aria-selected="false">
+                        <i class="fa-solid fa-user-pen me-1"></i>Mi Perfil
+                    </button>
+                </li>
             </ul>
 
             <div class="tab-content" id="loginRegisterTabsContent">
@@ -168,6 +173,99 @@
                         <!-- Botón Enviar -->
                         <div class="d-grid mt-4">
                             <button type="submit" class="btn btn-primary-hh btn-lg fs-6">Crear Cuenta</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- TAB MI PERFIL -->
+                <div class="tab-pane fade" id="tab-perfil" role="tabpanel" aria-labelledby="perfil-tab">
+
+                    <!-- Estado: No hay sesión activa -->
+                    <div id="perfil-no-sesion" class="text-center py-4" style="display: none;">
+                        <i class="fa-solid fa-lock fs-1 text-muted mb-3"></i>
+                        <p class="text-muted">Debes iniciar sesión para ver y editar tu perfil.</p>
+                        <button class="btn btn-primary-hh" onclick="document.getElementById('login-tab').click()">
+                            <i class="fa-solid fa-arrow-right-to-bracket me-1"></i>Iniciar Sesión
+                        </button>
+                    </div>
+
+                    <!-- Formulario de Perfil -->
+                    <form id="form-perfil" style="display: none;">
+                        <!-- Cabecera de usuario -->
+                        <div class="d-flex align-items-center gap-3 mb-4 p-3 rounded-3" style="background: linear-gradient(135deg, rgba(46,139,87,0.08), rgba(139,69,19,0.05));">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width:56px; height:56px; background: var(--hh-primary); color:#fff; font-size:1.5rem;">
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+                            <div>
+                                <p class="mb-0 fw-bold" id="perfil-nombre-display">—</p>
+                                <p class="mb-0 text-muted small" id="perfil-correo-display">—</p>
+                                <span class="badge" id="perfil-tipo-badge" style="background-color: var(--hh-primary);">—</span>
+                            </div>
+                        </div>
+
+                        <hr class="my-3">
+                        <p class="fw-semibold text-muted small text-uppercase mb-3"><i class="fa-solid fa-pen-to-square me-1"></i>Editar información personal</p>
+
+                        <!-- Nombre -->
+                        <div class="mb-3">
+                            <label for="perfil-nombre" class="form-label fw-semibold">Nombre *</label>
+                            <input type="text" class="form-control" id="perfil-nombre" placeholder="Tu nombre" maxlength="50">
+                            <div class="invalid-feedback">El nombre es requerido (máx. 50 caracteres).</div>
+                        </div>
+
+                        <!-- Apellidos -->
+                        <div class="mb-3">
+                            <label for="perfil-apellidos" class="form-label fw-semibold">Apellidos *</label>
+                            <input type="text" class="form-control" id="perfil-apellidos" placeholder="Tus apellidos" maxlength="100">
+                            <div class="invalid-feedback">Los apellidos son requeridos (máx. 100 caracteres).</div>
+                        </div>
+
+                        <!-- Teléfono de Contacto -->
+                        <div class="mb-3">
+                            <label for="perfil-telefono" class="form-label fw-semibold">
+                                <i class="fa-solid fa-phone me-1 text-success"></i>Número de Contacto
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text">+56</span>
+                                <input type="tel" class="form-control" id="perfil-telefono" placeholder="9 1234 5678" maxlength="9">
+                            </div>
+                            <div class="invalid-feedback" id="perfil-telefono-feedback">Ingresa un número válido (9 dígitos, comenzando con 9).</div>
+                            <div class="form-text text-muted">Ej: 912345678 (sin el +56)</div>
+                        </div>
+
+                        <hr class="my-3">
+                        <p class="fw-semibold text-muted small text-uppercase mb-3"><i class="fa-solid fa-truck me-1"></i>Dirección de Entrega</p>
+
+                        <!-- Región -->
+                        <div class="mb-3">
+                            <label for="perfil-region" class="form-label fw-semibold">Región *</label>
+                            <select id="perfil-region" class="form-select">
+                                <!-- Dinámico -->
+                            </select>
+                            <div class="invalid-feedback">Selecciona una región.</div>
+                        </div>
+
+                        <!-- Comuna -->
+                        <div class="mb-3">
+                            <label for="perfil-comuna" class="form-label fw-semibold">Comuna *</label>
+                            <select id="perfil-comuna" class="form-select">
+                                <option value="">Seleccione Comuna</option>
+                            </select>
+                            <div class="invalid-feedback">Selecciona una comuna.</div>
+                        </div>
+
+                        <!-- Dirección -->
+                        <div class="mb-3">
+                            <label for="perfil-direccion" class="form-label fw-semibold">Dirección de Despacho *</label>
+                            <input type="text" class="form-control" id="perfil-direccion" placeholder="Av. Ejemplo 1234" maxlength="300">
+                            <div class="invalid-feedback">La dirección es requerida (máx. 300 caracteres).</div>
+                        </div>
+
+                        <!-- Botón Guardar -->
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-primary-hh btn-lg fs-6" id="btn-guardar-perfil">
+                                <i class="fa-solid fa-floppy-disk me-2"></i>Guardar Cambios
+                            </button>
                         </div>
                     </form>
                 </div>

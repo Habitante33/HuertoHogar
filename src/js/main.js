@@ -45,6 +45,16 @@ document.addEventListener("DOMContentLoaded", () => {
         if (typeof inicializarCarrito === "function") inicializarCarrito();
     } else if (path.includes("login.html")) {
         if (typeof inicializarLoginRegistro === "function") inicializarLoginRegistro();
+        // Si hay sesión activa, activar directamente la pestaña Mi Perfil
+        const sesionActual = JSON.parse(localStorage.getItem("usuario_sesion"));
+        if (sesionActual && sesionActual.run) {
+            const perfilTabEl = document.getElementById("perfil-tab");
+            if (perfilTabEl) {
+                const bsPerfilTab = new bootstrap.Tab(perfilTabEl);
+                bsPerfilTab.show();
+                if (typeof cargarDatosPerfil === "function") cargarDatosPerfil();
+            }
+        }
     } else if (path.includes("admin.html")) {
         if (typeof inicializarAdmin === "function") inicializarAdmin();
     }

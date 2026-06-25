@@ -140,6 +140,197 @@ function inicializarLoginRegistro() {
     if (registerTab) {
         registerTab.addEventListener("show.bs.tab", limpiarFormulariosConPersistencia);
     }
+
+    // ---- TAB MI PERFIL ----
+    inicializarPerfil();
+}
+
+// ==========================================
+// PERFIL DE USUARIO - EDICIÓN
+// ==========================================
+function inicializarPerfil() {
+    const perfilTabItem   = document.getElementById("perfil-tab-item");
+    const perfilTab       = document.getElementById("perfil-tab");
+    const formPerfil      = document.getElementById("form-perfil");
+    const noSesion        = document.getElementById("perfil-no-sesion");
+
+    if (!perfilTabItem) return;
+
+    const usuarioSesion = DB.get("usuario_sesion", null);
+    const haySession    = usuarioSesion && usuarioSesion.run;
+
+    // Ocultar/mostrar pestañas según estado de sesión
+    const loginTabItem    = document.getElementById("login-tab")?.closest("li");
+    const registerTabItem = document.getElementById("register-tab")?.closest("li");
+
+    if (haySession) {
+        // Con sesión: mostrar solo Mi Perfil, ocultar Iniciar Sesión y Registrarse
+        perfilTabItem.style.display = "block";
+        if (loginTabItem)    loginTabItem.style.display    = "none";
+        if (registerTabItem) registerTabItem.style.display = "none";
+    } else {
+        // Sin sesión: ocultar Mi Perfil, mostrar Iniciar Sesión y Registrarse
+        perfilTabItem.style.display = "none";
+        if (loginTabItem)    loginTabItem.style.display    = "";
+        if (registerTabItem) registerTabItem.style.display = "";
+    }
+
+    // Cuando se abre la pestaña, cargar datos actualizados del usuario
+    if (perfilTab) {
+        perfilTab.addEventListener("shown.bs.tab", () => {
+            cargarDatosPerfil();
+        });
+    }
+
+    // Si la URL trae #perfil como hash, activar esa pestaña directamente
+    if (window.location.hash === "#perfil" && haySession) {
+        const bsTab = new bootstrap.Tab(perfilTab);
+        bsTab.show();
+    }
+
+    // Configurar región/comuna del perfil
+    if (typeof configurarRegionComuna === "function") {
+        configurarRegionComuna("perfil-region", "perfil-comuna");
+    }
+
+    // Validaciones del formulario de perfil
+    const perfilConfig = {
+        "perfil-nombre":    { required: true, maxLength: 50 },
+        "perfil-apellidos": { required: true, maxLength: 100 },
+        "perfil-region":    { required: true },
+        "perfil-comuna":    { required: true },
+        "perfil-direccion": { required: true, maxLength: 300 }
+    };
+
+    if (typeof validarFormulario === "function") {
+        validarFormulario(perfilConfig, true);
+    }
+
+    // Validación del teléfono en tiempo real
+    const inputTel = document.getElementById("perfil-telefono");
+    if (inputTel) {
+        inputTel.addEventListener("input", () => {
+            inputTel.value = inputTel.value.replace(/\D/g, "");
+            const feedback = document.getElementById("perfil-telefono-feedback");
+            if (inputTel.value && !/^9\d{8}$/.test(inputTel.value)) {
+                inputTel.classList.add("is-invalid");
+            } else {
+                inputTel.classList.remove("is-invalid");
+            }
+        });
+    }
+
+    // Envío del formulario
+    if (formPerfil) {
+        formPerfil.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            // Validar campos obligatorios
+            const valido = validarFormulario(perfilConfig);
+
+            // Validar teléfono (opcional pero si se rellena debe ser correcto)
+            const tel = (document.getElementById("perfil-telefono")?.value || "").trim();
+            let telValido = true;
+            if (tel && !/^9\d{8}$/.test(tel)) {
+                document.getElementById("perfil-telefono").classList.add("is-invalid");
+                telValido = false;
+            }
+
+            if (!valido || !telValido) return;
+
+            const sesion = DB.get("usuario_sesion", null);
+            if (!sesion || !sesion.run) {
+                alert("Error: No hay sesión activa.");
+                return;
+            }
+
+            const actualizacion = {
+                nombre:    document.getElementById("perfil-nombre").value.trim(),
+                apellidos: document.getElementById("perfil-apellidos").value.trim(),
+                telefono:  tel,
+                region:    document.getElementById("perfil-region").value,
+                comuna:    document.getElementById("perfil-comuna").value,
+                direccion: document.getElementById("perfil-direccion").value.trim()
+            };
+
+            // Actualizar en el listado de usuarios
+            DB.update("usuarios", sesion.run, actualizacion, "run");
+
+            // Actualizar la sesión activa
+            const sesionActualizada = { ...sesion, ...actualizacion };
+            DB.set("usuario_sesion", sesionActualizada);
+
+            // Refrescar la cabecera del perfil
+            cargarDatosPerfil();
+
+            alert("¡Perfil guardado exitosamente!");
+        });
+    }
+}
+
+function cargarDatosPerfil() {
+    const sesion = DB.get("usuario_sesion", null);
+    const formPerfil = document.getElementById("form-perfil");
+    const noSesion   = document.getElementById("perfil-no-sesion");
+
+    if (!sesion || !sesion.run) {
+        if (formPerfil) formPerfil.style.display = "none";
+        if (noSesion)   noSesion.style.display   = "block";
+        return;
+    }
+
+    if (formPerfil) formPerfil.style.display = "block";
+    if (noSesion)   noSesion.style.display   = "none";
+
+    // Cabecera informativa
+    const nombreDisplay = document.getElementById("perfil-nombre-display");
+    const correoDisplay = document.getElementById("perfil-correo-display");
+    const tipoBadge     = document.getElementById("perfil-tipo-badge");
+
+    if (nombreDisplay) nombreDisplay.textContent = `${sesion.nombre} ${sesion.apellidos}`;
+    if (correoDisplay) correoDisplay.textContent = sesion.correo;
+    if (tipoBadge) {
+        tipoBadge.textContent = sesion.tipo || "Cliente";
+        const colores = { "Administrador": "#dc3545", "Vendedor": "#0d6efd", "Cliente": "#2e8b57" };
+        tipoBadge.style.backgroundColor = colores[sesion.tipo] || "#2e8b57";
+    }
+
+    // Pre-rellenar campos editables
+    const setVal = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.value = val || "";
+    };
+
+    setVal("perfil-nombre",    sesion.nombre);
+    setVal("perfil-apellidos", sesion.apellidos);
+    setVal("perfil-telefono",  sesion.telefono || "");
+    setVal("perfil-direccion", sesion.direccion);
+
+    // Pre-seleccionar región y luego comuna con un pequeño delay para que el selector cargue
+    const selectRegion = document.getElementById("perfil-region");
+    const selectComuna = document.getElementById("perfil-comuna");
+
+    if (selectRegion && sesion.region) {
+        selectRegion.value = sesion.region;
+
+        // Disparar el evento change para que cargue las comunas
+        const changeEvent = new Event("change");
+        selectRegion.dispatchEvent(changeEvent);
+
+        // Seleccionar la comuna después de que se llenen las opciones
+        setTimeout(() => {
+            if (selectComuna && sesion.comuna) {
+                selectComuna.value = sesion.comuna;
+            }
+        }, 50);
+    }
+
+    // Limpiar estados de validación al recargar
+    if (formPerfil) {
+        formPerfil.querySelectorAll(".is-invalid, .is-valid").forEach(el =>
+            el.classList.remove("is-invalid", "is-valid")
+        );
+    }
 }
 
 // ==========================================
