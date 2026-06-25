@@ -24,7 +24,7 @@ function inicializarLoginRegistro() {
         "reg-correo": { 
             required: true, 
             maxLength: 100, 
-            pattern: /^[a-zA-Z0-9._%+-]+@(?:inacap\.cl|profesor\.inacap\.cl|gmail\.com)$/ 
+            pattern: /^[a-zA-Z0-9._%+-]+@(?:inacap\.cl|inacapmail\.cl|gmail\.com)$/ 
         },
         "reg-region": { required: true },
         "reg-comuna": { required: true },
@@ -56,7 +56,7 @@ function inicializarLoginRegistro() {
                 if (usuarioEncontrado) {
                     DB.set("usuario_sesion", usuarioEncontrado);
                     localStorage.setItem("rol_simulado", usuarioEncontrado.tipo);
-                    alert(`¡Bienvenido ${usuarioEncontrado.nombre}! Rol: ${usuarioEncontrado.tipo}.`);
+                    alert("¡Inicio de sesión exitoso!");
                     
                     if (usuarioEncontrado.tipo === "Administrador" || usuarioEncontrado.tipo === "Vendedor") {
                         window.redireccionarA("admin.html");
@@ -426,7 +426,7 @@ function inicializarAdmin() {
                 "usr-correo": { 
                     required: true, 
                     maxLength: 100, 
-                    pattern: /^[a-zA-Z0-9._%+-]+@(?:inacap\.cl|profesor\.inacap\.cl|gmail\.com)$/ 
+                    pattern: /^[a-zA-Z0-9._%+-]+@(?:inacap\.cl|inacapmail\.cl|gmail\.com)$/ 
                 },
                 "usr-region": { required: true },
                 "usr-comuna": { required: true },
