@@ -211,18 +211,25 @@ const ORDENES_INICIALES = [
 ];
 
 // Control de versiones de base de datos local (evita esquemas antiguos corruptos)
-const DB_VERSION_HH = "2.3";
+const DB_VERSION_HH = "2.4";
 const versionGuardada = localStorage.getItem("db_version");
 
 if (versionGuardada !== DB_VERSION_HH) {
+    // Guardar carrito antes del reset para no perder los productos del usuario
+    const carritoRespaldo = localStorage.getItem("carrito");
+    const sesionRespaldo  = localStorage.getItem("usuario_sesion");
+    const rolRespaldo     = localStorage.getItem("rol_simulado");
+
     localStorage.removeItem("productos");
     localStorage.removeItem("usuarios");
     localStorage.removeItem("regiones");
-    localStorage.removeItem("carrito");
-    localStorage.removeItem("usuario_sesion");
-    localStorage.removeItem("rol_simulado");
     localStorage.removeItem("ordenes");
     localStorage.setItem("db_version", DB_VERSION_HH);
+
+    // Restaurar datos que no deben perderse en la migración
+    if (carritoRespaldo) localStorage.setItem("carrito", carritoRespaldo);
+    if (sesionRespaldo)  localStorage.setItem("usuario_sesion", sesionRespaldo);
+    if (rolRespaldo)     localStorage.setItem("rol_simulado", rolRespaldo);
 }
 
 // Inicialización de LocalStorage si no existen los datos
@@ -250,9 +257,13 @@ if (!localStorage.getItem("ordenes")) {
 
 // REF-01: Capa de acceso a datos unificada (DB Wrapper)
 window.DB = {
-    get: (key, defaultVal = []) => {
+    get: (key, defaultVal) => {
+        if (defaultVal === undefined) defaultVal = [];
         try {
-            return JSON.parse(localStorage.getItem(key)) || defaultVal;
+            const raw = localStorage.getItem(key);
+            if (raw === null || raw === undefined) return defaultVal;
+            const parsed = JSON.parse(raw);
+            return (parsed !== null && parsed !== undefined) ? parsed : defaultVal;
         } catch (e) {
             console.error("Error reading localStorage key: " + key, e);
             return defaultVal;

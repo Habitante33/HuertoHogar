@@ -187,8 +187,16 @@ window.cambiarRolSimulado = function(nuevoRol) {
 function actualizarBadgeCarritoComun() {
     const badge = document.getElementById("cart-badge");
     if (badge) {
-        const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-        const totalItems = carrito.reduce((sum, item) => sum + item.cantidad, 0);
+        let totalItems = 0;
+        try {
+            const raw = localStorage.getItem("carrito");
+            const carrito = raw ? JSON.parse(raw) : [];
+            if (Array.isArray(carrito)) {
+                totalItems = carrito.reduce((sum, item) => sum + (item.cantidad || 0), 0);
+            }
+        } catch (e) {
+            totalItems = 0;
+        }
         badge.textContent = totalItems;
         badge.style.display = totalItems > 0 ? "inline-block" : "none";
     }

@@ -273,6 +273,60 @@ h1, h2, h3, h4, h5, h6, .card-title {
     box-shadow: 0 6px 18px rgba(46, 139, 87, 0.3);
 }
 
+/* HISTORIAL DE PEDIDOS */
+.orden-card {
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    padding: 1rem 1.1rem;
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
+    border-left: 4px solid #dee2e6;
+}
+
+.orden-card:hover {
+    box-shadow: 0 6px 20px rgba(0,0,0,0.07);
+    transform: translateY(-2px);
+}
+
+.orden-card--ultimo {
+    border-left-color: var(--hh-primary);
+    background: linear-gradient(135deg, rgba(46,139,87,0.03), #ffffff);
+}
+
+.orden-card__header {
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.orden-card__items li {
+    border-bottom: 1px dashed #f0f0f0;
+    font-size: 0.875rem;
+}
+
+.orden-card__items li:last-child {
+    border-bottom: none;
+}
+
+.orden-card__footer {
+    border-top: 1px solid #f0f0f0;
+    padding-top: 0.5rem;
+    margin-top: 0.25rem;
+}
+
+#btn-repetir-pedido {
+    border-radius: 10px;
+    padding: 0.6rem 1rem;
+    transition: all 0.25s ease;
+}
+
+#btn-repetir-pedido:hover {
+    background-color: var(--hh-primary);
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(46, 139, 87, 0.25);
+}
+
 /* BLOG */
 .blog-entry {
     border-bottom: 1px solid #e9ecef;

@@ -10,6 +10,26 @@ function inicializarCarrito() {
         configurarRegionComuna("cart-region", "cart-comuna");
     }
 
+    // Pre-llenar datos de despacho con los datos del usuario autenticado
+    const usrSesion = DB.get("usuario_sesion", null);
+    if (usrSesion && usrSesion.run) {
+        const cartRegion   = document.getElementById("cart-region");
+        const cartComuna   = document.getElementById("cart-comuna");
+        const cartDireccion = document.getElementById("cart-direccion");
+
+        if (cartRegion && usrSesion.region) {
+            // Pequeño delay para que configurarRegionComuna termine de cargar las opciones
+            setTimeout(() => {
+                cartRegion.value = usrSesion.region;
+                cartRegion.dispatchEvent(new Event("change"));
+                setTimeout(() => {
+                    if (cartComuna && usrSesion.comuna) cartComuna.value = usrSesion.comuna;
+                    if (cartDireccion && usrSesion.direccion) cartDireccion.value = usrSesion.direccion;
+                }, 60);
+            }, 50);
+        }
+    }
+
     const formDespacho = document.getElementById("form-despacho");
     if (formDespacho) {
         formDespacho.addEventListener("submit", (e) => {
@@ -53,6 +73,7 @@ function inicializarCarrito() {
 
                 const nuevaOrden = {
                     id: "ORD-" + Math.floor(1000 + Math.random() * 9000),
+                    clienteRun: usrSesion ? usrSesion.run : null,
                     cliente: {
                         nombre: nombreCliente,
                         region: region.value,
@@ -93,28 +114,37 @@ function inicializarCarrito() {
 // 2. RENDERIZADO DE TABLA EN CARRITO.HTML
 // ==========================================
 function renderizarCarrito() {
-    const listado = document.getElementById("carrito-listado-items");
+    const listado      = document.getElementById("carrito-listado-items");
     const subtotalText = document.getElementById("cart-subtotal");
-    const totalText = document.getElementById("cart-total");
+    const totalText    = document.getElementById("cart-total");
 
     if (!listado) return;
 
-    const carrito = DB.get("carrito");
-    const productos = DB.get("productos");
+    // Leer directamente desde localStorage para máxima fiabilidad
+    let carrito   = [];
+    let productos = [];
+    try {
+        const rawCarrito   = localStorage.getItem("carrito");
+        const rawProductos = localStorage.getItem("productos");
+        carrito   = rawCarrito   ? JSON.parse(rawCarrito)   : [];
+        productos = rawProductos ? JSON.parse(rawProductos) : [];
+    } catch (e) {
+        console.error("Error leyendo datos del carrito:", e);
+    }
 
     listado.innerHTML = "";
 
-    if (carrito.length === 0) {
+    if (!Array.isArray(carrito) || carrito.length === 0) {
         listado.innerHTML = `<tr><td colspan="5" class="text-center py-4">No hay productos en tu carrito. <a href="productos.html" class="text-success fw-bold">Ir al catálogo</a></td></tr>`;
         if (subtotalText) subtotalText.textContent = "$0 CLP";
-        if (totalText) totalText.textContent = "$0 CLP";
+        if (totalText)    totalText.textContent    = "$0 CLP";
         return;
     }
 
     let subtotal = 0;
 
     carrito.forEach(item => {
-        const prod = productos.find(p => p.id === item.id);
+        const prod = Array.isArray(productos) ? productos.find(p => p.id === item.id) : null;
         if (!prod) return;
 
         const sub = prod.precio * item.cantidad;
@@ -126,7 +156,8 @@ function renderizarCarrito() {
     });
 
     if (subtotalText) subtotalText.textContent = `$${subtotal.toLocaleString("es-CL")} CLP`;
-    if (totalText) totalText.textContent = `$${subtotal.toLocaleString("es-CL")} CLP`;
+    if (totalText)    totalText.textContent    = `$${subtotal.toLocaleString("es-CL")} CLP`;
+
 }
 
 // REF-08: Constructor de filas HTML para la tabla del carrito (DRY)

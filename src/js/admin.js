@@ -269,18 +269,18 @@ function inicializarPerfil() {
 }
 
 function cargarDatosPerfil() {
-    const sesion = DB.get("usuario_sesion", null);
-    const formPerfil = document.getElementById("form-perfil");
-    const noSesion   = document.getElementById("perfil-no-sesion");
+    const sesion         = DB.get("usuario_sesion", null);
+    const autenticado    = document.getElementById("perfil-autenticado");
+    const noSesion       = document.getElementById("perfil-no-sesion");
 
     if (!sesion || !sesion.run) {
-        if (formPerfil) formPerfil.style.display = "none";
-        if (noSesion)   noSesion.style.display   = "block";
+        if (autenticado) autenticado.style.display = "none";
+        if (noSesion)    noSesion.style.display    = "block";
         return;
     }
 
-    if (formPerfil) formPerfil.style.display = "block";
-    if (noSesion)   noSesion.style.display   = "none";
+    if (autenticado) autenticado.style.display = "block";
+    if (noSesion)    noSesion.style.display    = "none";
 
     // Cabecera informativa
     const nombreDisplay = document.getElementById("perfil-nombre-display");
@@ -306,32 +306,140 @@ function cargarDatosPerfil() {
     setVal("perfil-telefono",  sesion.telefono || "");
     setVal("perfil-direccion", sesion.direccion);
 
-    // Pre-seleccionar región y luego comuna con un pequeño delay para que el selector cargue
+    // Pre-seleccionar región y luego comuna
     const selectRegion = document.getElementById("perfil-region");
     const selectComuna = document.getElementById("perfil-comuna");
 
     if (selectRegion && sesion.region) {
         selectRegion.value = sesion.region;
-
-        // Disparar el evento change para que cargue las comunas
-        const changeEvent = new Event("change");
-        selectRegion.dispatchEvent(changeEvent);
-
-        // Seleccionar la comuna después de que se llenen las opciones
+        selectRegion.dispatchEvent(new Event("change"));
         setTimeout(() => {
-            if (selectComuna && sesion.comuna) {
-                selectComuna.value = sesion.comuna;
-            }
+            if (selectComuna && sesion.comuna) selectComuna.value = sesion.comuna;
         }, 50);
     }
 
-    // Limpiar estados de validación al recargar
+    // Limpiar estados de validación
+    const formPerfil = document.getElementById("form-perfil");
     if (formPerfil) {
         formPerfil.querySelectorAll(".is-invalid, .is-valid").forEach(el =>
             el.classList.remove("is-invalid", "is-valid")
         );
     }
 }
+
+// ==========================================
+// HISTORIAL DE PEDIDOS DEL USUARIO
+// ==========================================
+window.renderizarHistorialPedidos = function() {
+    const lista      = document.getElementById("historial-pedidos-lista");
+    const btnRepetir = document.getElementById("btn-repetir-container");
+    if (!lista) return;
+
+    const sesion  = DB.get("usuario_sesion", null);
+    if (!sesion || !sesion.run) {
+        lista.innerHTML = `<div class="text-center py-5 text-muted"><i class="fa-solid fa-lock fs-1 mb-3 d-block"></i>Debes iniciar sesión.</div>`;
+        return;
+    }
+
+    const ordenes = DB.get("ordenes").filter(o => o.clienteRun === sesion.run);
+
+    if (ordenes.length === 0) {
+        if (btnRepetir) btnRepetir.style.display = "none";
+        lista.innerHTML = `
+            <div class="text-center py-5">
+                <i class="fa-solid fa-box-open fs-1 mb-3 d-block text-muted"></i>
+                <p class="text-muted fw-semibold">Aún no tienes pedidos realizados.</p>
+                <a href="productos.html" class="btn btn-primary-hh btn-sm mt-2">
+                    <i class="fa-solid fa-store me-1"></i>Ir al catálogo
+                </a>
+            </div>`;
+        return;
+    }
+
+    if (btnRepetir) btnRepetir.style.display = "block";
+
+    // Ordenar del más reciente al más antiguo
+    const ordenadas = [...ordenes].reverse();
+
+    lista.innerHTML = ordenadas.map((orden, idx) => {
+        const esUltimo = idx === 0;
+        const itemsHtml = orden.items.map(it =>
+            `<li class="d-flex justify-content-between align-items-center py-1">
+                <span><i class="fa-solid fa-leaf text-success me-1"></i>${it.nombre}</span>
+                <span class="text-muted small">${it.cantidad} × $${it.precio.toLocaleString("es-CL")}</span>
+            </li>`
+        ).join("");
+
+        return `
+        <div class="orden-card${esUltimo ? " orden-card--ultimo" : ""} mb-3">
+            <div class="orden-card__header d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="fw-bold text-success">${orden.id}</span>
+                    ${esUltimo ? `<span class="badge bg-success ms-2" style="font-size:0.7rem;">Último</span>` : ""}
+                </div>
+                <span class="orden-card__fecha small text-muted">
+                    <i class="fa-regular fa-calendar me-1"></i>${orden.fecha}
+                </span>
+            </div>
+            <ul class="orden-card__items list-unstyled mb-2 mt-2">${itemsHtml}</ul>
+            <div class="orden-card__footer d-flex justify-content-between align-items-center">
+                <span class="small text-muted">
+                    <i class="fa-solid fa-location-dot me-1"></i>${orden.cliente.comuna}, ${orden.cliente.region}
+                </span>
+                <span class="fw-bold text-success">$${orden.total.toLocaleString("es-CL")} CLP</span>
+            </div>
+        </div>`;
+    }).join("");
+};
+
+window.repetirUltimoPedido = function() {
+    const sesion  = DB.get("usuario_sesion", null);
+    if (!sesion || !sesion.run) return;
+
+    const ordenes  = DB.get("ordenes").filter(o => o.clienteRun === sesion.run);
+    if (ordenes.length === 0) return;
+
+    const ultima   = ordenes[ordenes.length - 1];
+    const productos = DB.get("productos");
+    let carritoActual = DB.get("carrito");
+    let agregados = 0;
+    let sinStock  = [];
+
+    ultima.items.forEach(it => {
+        const prod = productos.find(p => p.id === it.id);
+        if (!prod) return;
+
+        const enCarrito     = carritoActual.find(c => c.id === it.id);
+        const cantidadActual = enCarrito ? enCarrito.cantidad : 0;
+        const disponible    = prod.stock - cantidadActual;
+
+        if (disponible <= 0) {
+            sinStock.push(prod.nombre);
+            return;
+        }
+
+        const cantAgregar = Math.min(it.cantidad, disponible);
+        if (enCarrito) {
+            enCarrito.cantidad += cantAgregar;
+        } else {
+            carritoActual.push({ id: it.id, cantidad: cantAgregar });
+        }
+        agregados++;
+    });
+
+    DB.set("carrito", carritoActual);
+    if (typeof actualizarBadgeCarritoComun === "function") actualizarBadgeCarritoComun();
+
+    if (sinStock.length > 0) {
+        alert(`Advertencia: Algunos productos no tienen stock disponible: ${sinStock.join(", ")}.`);
+    }
+    if (agregados > 0) {
+        alert(`¡Éxito! Se agregaron los productos del pedido ${ultima.id} al carrito.`);
+        // Redirigir al carrito
+        const isInComponents = window.location.pathname.includes("/src/components/");
+        window.location.href = isInComponents ? "carrito.html" : "src/components/carrito.html";
+    }
+};
 
 // ==========================================
 // 2. INICIALIZAR VISTA ADMINISTRADOR
