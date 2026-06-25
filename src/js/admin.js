@@ -225,6 +225,14 @@ function inicializarAdmin() {
     // Guardado de Producto
     const formProducto = document.getElementById("form-admin-producto");
     if (formProducto) {
+        const chkOferta = document.getElementById("prod-es-oferta");
+        const containerPrecioAnterior = document.getElementById("container-precio-anterior");
+        if (chkOferta && containerPrecioAnterior) {
+            chkOferta.addEventListener("change", () => {
+                containerPrecioAnterior.style.display = chkOferta.checked ? "block" : "none";
+            });
+        }
+
         const fileInput = document.getElementById("prod-foto-archivo");
         const urlInput = document.getElementById("prod-foto-url");
         const previewContainer = document.getElementById("prod-foto-preview-container");
@@ -307,7 +315,19 @@ function inicializarAdmin() {
                     const sc = parseInt(val);
                     return !isNaN(sc) && sc >= 0 && !val.includes(".");
                 }},
-                "prod-categoria": { required: true }
+                "prod-categoria": { required: true },
+                "prod-precio-anterior": { custom: val => {
+                    const isChecked = document.getElementById("prod-es-oferta").checked;
+                    if (!isChecked) return true;
+                    const cleanVal = val.replace(/\./g, "").replace(/,/g, "").trim();
+                    if (cleanVal === "") return false;
+                    const pAnt = parseFloat(cleanVal);
+                    
+                    const precioRaw = document.getElementById("prod-precio").value.replace(/\./g, "").replace(/,/g, "").trim();
+                    const pAct = parseFloat(precioRaw);
+                    
+                    return !isNaN(pAnt) && pAnt >= 0 && /^\d+$/.test(cleanVal) && (!isNaN(pAct) ? pAnt > pAct : true);
+                }}
             });
 
             if (valido) {
@@ -318,6 +338,8 @@ function inicializarAdmin() {
                 const stockInput = document.getElementById("prod-stock");
                 const stockCriticoInput = document.getElementById("prod-stock-critico");
                 const categoriaInput = document.getElementById("prod-categoria");
+                const esOfertaCheckbox = document.getElementById("prod-es-oferta");
+                const precioAnteriorInput = document.getElementById("prod-precio-anterior");
 
                 const productos = DB.get("productos");
                 const nuevoCodigo = codigoInput.value.trim().toUpperCase();
@@ -355,7 +377,9 @@ function inicializarAdmin() {
                     stockCritico: parseInt(stockCriticoInput.value) || 0,
                     descripcion: descInput.value.trim() || "Sin descripción.",
                     origen: editandoProdId ? ((productos.find(p => p.id === editandoProdId) || {}).origen || "Nacional") : "Nacional",
-                    imagen: finalImagen
+                    imagen: finalImagen,
+                    esOferta: esOfertaCheckbox.checked,
+                    precioAnterior: esOfertaCheckbox.checked ? parseFloat(precioAnteriorInput.value.replace(/\./g, "").replace(/,/g, "").trim()) : null
                 };
 
                 // REF-12: Operaciones CRUD del Administrador (Guardar producto)
@@ -499,11 +523,16 @@ function renderizarTablaProductos() {
 }
 
 function crearFilaProductoHTML(p, esCritico, accionesHtml) {
+    const precioHtml = p.esOferta && p.precioAnterior
+        ? `<div>$${(p.precio || 0).toLocaleString("es-CL")}</div>
+           <small class="text-warning fw-bold" style="font-size: 0.7rem;">🏷️ Oferta (Antes: $${p.precioAnterior.toLocaleString("es-CL")})</small>`
+        : `$${(p.precio || 0).toLocaleString("es-CL")}`;
+
     return `
         <td><code>${p.id}</code></td>
         <td><b>${p.nombre}</b></td>
         <td><span class="badge bg-secondary">${p.categoria}</span></td>
-        <td>$${(p.precio || 0).toLocaleString("es-CL")}</td>
+        <td>${precioHtml}</td>
         <td>
             ${p.stock} 
             ${esCritico ? `<span class="badge bg-danger stock-critico-badge ms-1">⚠️ Crítico (Min: ${p.stockCritico})</span>` : ""}
@@ -584,6 +613,11 @@ window.abrirCrearProducto = function() {
     const form = document.getElementById("form-admin-producto");
     form.reset();
 
+    const chkOferta = document.getElementById("prod-es-oferta");
+    if (chkOferta) chkOferta.checked = false;
+    const containerPrecioAnterior = document.getElementById("container-precio-anterior");
+    if (containerPrecioAnterior) containerPrecioAnterior.style.display = "none";
+
     const previewContainer = document.getElementById("prod-foto-preview-container");
     if (previewContainer) previewContainer.style.display = "none";
     const previewImg = document.getElementById("prod-foto-preview");
@@ -615,6 +649,17 @@ window.abrirEditarProducto = function(id) {
     document.getElementById("prod-nombre").value = p.nombre || "";
     document.getElementById("prod-descripcion").value = p.descripcion || "";
     document.getElementById("prod-precio").value = (p.precio !== undefined && p.precio !== null) ? p.precio.toLocaleString("es-CL") : "";
+    
+    const chkOfertaEditar = document.getElementById("prod-es-oferta");
+    const containerPrecioAnteriorEditar = document.getElementById("container-precio-anterior");
+    const precioAnteriorInputEditar = document.getElementById("prod-precio-anterior");
+
+    if (chkOfertaEditar) chkOfertaEditar.checked = !!p.esOferta;
+    if (containerPrecioAnteriorEditar) containerPrecioAnteriorEditar.style.display = p.esOferta ? "block" : "none";
+    if (precioAnteriorInputEditar) {
+        precioAnteriorInputEditar.value = (p.esOferta && p.precioAnterior !== undefined && p.precioAnterior !== null) ? p.precioAnterior.toLocaleString("es-CL") : "";
+    }
+
     document.getElementById("prod-stock").value = (p.stock !== undefined && p.stock !== null) ? p.stock : "";
     document.getElementById("prod-stock-critico").value = (p.stockCritico !== undefined && p.stockCritico !== null) ? p.stockCritico : "";
     document.getElementById("prod-categoria").value = p.categoria || "";
