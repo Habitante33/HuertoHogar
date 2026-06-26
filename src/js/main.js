@@ -223,7 +223,7 @@ function actualizarBadgeCarritoComun() {
 // SISTEMA DE NOTIFICACIONES PERSONALIZADAS (TOASTS EN FONDO BLANCO PREMIUM)
 // =========================================================================
 
-window.mostrarNotificacion = function(mensaje, tipo = "success") {
+function _obtenerOCrearContenedor() {
     let container = document.getElementById("toast-container-hh");
     if (!container) {
         container = document.createElement("div");
@@ -237,6 +237,11 @@ window.mostrarNotificacion = function(mensaje, tipo = "success") {
         container.style.gap = "10px";
         document.body.appendChild(container);
     }
+    return container;
+}
+
+window.mostrarNotificacion = function(mensaje, tipo = "success") {
+    const container = _obtenerOCrearContenedor();
 
     const toast = document.createElement("div");
     toast.className = `toast-hh toast-hh-${tipo}`;
@@ -275,8 +280,7 @@ window.mostrarNotificacion = function(mensaje, tipo = "success") {
 
 window.confirmHH = function(mensaje) {
     return new Promise((resolve) => {
-        let container = document.getElementById("toast-container-hh");
-        if (!container) return resolve(false);
+        const container = _obtenerOCrearContenedor();
         
         const toast = document.createElement("div");
         toast.className = `toast-hh toast-hh-warning`; 
@@ -309,8 +313,7 @@ window.confirmHH = function(mensaje) {
 
 window.promptHH = function(mensaje) {
     return new Promise((resolve) => {
-        let container = document.getElementById("toast-container-hh");
-        if (!container) return resolve(null);
+        const container = _obtenerOCrearContenedor();
 
         const toast = document.createElement("div");
         toast.className = `toast-hh toast-hh-info`;

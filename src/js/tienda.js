@@ -29,36 +29,35 @@ function inicializarContacto() {
     }
 
     if (formContacto) {
+        // Vincular validaciones en tiempo real
+        const contactoConfig = {
+            "contacto-nombre":    { required: true, maxLength: 100 },
+            "contacto-correo":    {
+                required: true,
+                maxLength: 100,
+                pattern: /^[a-zA-Z0-9._%+-]+@(?:inacap\.cl|inacapmail\.cl|gmail\.com|profesor\.inacap\.cl)$/
+            },
+            "contacto-comentario": { required: true, maxLength: 500 }
+        };
+
+        if (typeof validarFormulario === "function") {
+            validarFormulario(contactoConfig, true);
+        }
+
         formContacto.addEventListener("submit", function(e) {
             e.preventDefault();
-            
+
             // REF-05: Validación del formulario de contacto declarativa
-            const valido = validarFormulario({
-                "contacto-nombre": [
-                    { regla: "requerido", mensaje: "El nombre es obligatorio." },
-                    { regla: "max:100", mensaje: "Máximo 100 caracteres." }
-                ],
-                "contacto-correo": [
-                    { regla: "requerido", mensaje: "El correo es obligatorio." },
-                    { regla: "email", mensaje: "Ingresa un correo válido (ej: nombre@gmail.com)." },
-                    { regla: "max:100", mensaje: "Máximo 100 caracteres." },
-                    { regla: "dominio", dominios: ["inacap.cl", "profesor.inacap.cl", "gmail.com"], mensaje: "Dominio debe ser @inacap.cl, @profesor.inacap.cl o @gmail.com." }
-                ],
-                "contacto-comentario": [
-                    { regla: "requerido", mensaje: "El comentario es obligatorio." },
-                    { regla: "max:500", mensaje: "El comentario no puede exceder los 500 caracteres." }
-                ]
-            });
+            const valido = validarFormulario(contactoConfig);
 
             if (valido) {
                 // Simular envío exitoso
-                const toastEl = document.getElementById('toast-contacto-success');
-                if (toastEl) {
-                    const toast = new bootstrap.Toast(toastEl);
-                    toast.show();
-                    formContacto.reset();
-                    if (charCounter) charCounter.textContent = "0/500";
-                }
+                alert("¡Éxito! Tu mensaje ha sido enviado. Nos pondremos en contacto pronto.");
+                formContacto.reset();
+                if (charCounter) charCounter.textContent = "0/500";
+                formContacto.querySelectorAll(".is-invalid, .is-valid").forEach(el =>
+                    el.classList.remove("is-invalid", "is-valid")
+                );
             }
         });
     }

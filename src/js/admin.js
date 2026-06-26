@@ -272,13 +272,23 @@ function cargarDatosPerfil() {
     const sesion         = DB.get("usuario_sesion", null);
     const autenticado    = document.getElementById("perfil-autenticado");
     const noSesion       = document.getElementById("perfil-no-sesion");
+    const adminBloqueado = document.getElementById("perfil-admin-bloqueado");
 
     if (!sesion || !sesion.run) {
         if (autenticado) autenticado.style.display = "none";
+        if (adminBloqueado) adminBloqueado.style.display = "none";
         if (noSesion)    noSesion.style.display    = "block";
         return;
     }
 
+    if (sesion.tipo === "Administrador") {
+        if (autenticado) autenticado.style.display = "none";
+        if (noSesion)    noSesion.style.display    = "none";
+        if (adminBloqueado) adminBloqueado.style.display = "block";
+        return;
+    }
+
+    if (adminBloqueado) adminBloqueado.style.display = "none";
     if (autenticado) autenticado.style.display = "block";
     if (noSesion)    noSesion.style.display    = "none";
 
@@ -338,6 +348,11 @@ window.renderizarHistorialPedidos = function() {
     const sesion  = DB.get("usuario_sesion", null);
     if (!sesion || !sesion.run) {
         lista.innerHTML = `<div class="text-center py-5 text-muted"><i class="fa-solid fa-lock fs-1 mb-3 d-block"></i>Debes iniciar sesión.</div>`;
+        return;
+    }
+
+    if (sesion.tipo === "Administrador") {
+        lista.innerHTML = `<div class="text-center py-5 text-danger"><i class="fa-solid fa-user-lock fs-1 mb-3 d-block"></i>Acceso deshabilitado para administradores.</div>`;
         return;
     }
 
@@ -770,6 +785,15 @@ function inicializarAdmin() {
                 // REF-12: Operaciones CRUD del Administrador (Guardar usuario)
                 if (editandoUsrRun) {
                     DB.update("usuarios", editandoUsrRun, usrData, "run");
+                    
+                    // Si el usuario editado es el mismo que tiene la sesión activa, actualizar sesión
+                    const sesion = DB.get("usuario_sesion", null);
+                    if (sesion && sesion.run === editandoUsrRun) {
+                        DB.set("usuario_sesion", { ...sesion, ...usrData });
+                        if (typeof inicializarNavbarComun === "function") {
+                            inicializarNavbarComun();
+                        }
+                    }
                 } else {
                     DB.insert("usuarios", usrData);
                 }
@@ -1036,7 +1060,13 @@ window.abrirEditarUsuario = async function(run, isVer = false) {
 
     // REF-12: Operaciones CRUD del Administrador (Prompt de contraseña para Admin)
     if (!isVer && u.tipo === "Administrador") {
-        const password = await promptHH("Por favor, ingrese la contraseña de este Administrador para confirmar la edición:");
+        const sesion = DB.get("usuario_sesion", null);
+        const esMismoUsuario = sesion && sesion.run === u.run;
+        const mensajePrompt = esMismoUsuario 
+            ? "Por favor, ingrese su contraseña actual para confirmar la edición:" 
+            : "Por favor, ingrese la contraseña de este Administrador para confirmar la edición:";
+            
+        const password = await promptHH(mensajePrompt);
         if (password === null) return;
         if (password !== u.contrasena) {
             alert("Error: Contraseña incorrecta. No se puede editar este administrador.");

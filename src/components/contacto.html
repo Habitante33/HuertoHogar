@@ -80,21 +80,21 @@
                         <form id="form-contacto">
                             <div class="mb-3">
                                 <label for="contacto-nombre" class="form-label fw-bold">Nombre Completo *</label>
-                                <input type="text" class="form-control" id="contacto-nombre" placeholder="Ej: Juan Pérez">
-                                <div class="is-invalid-feedback">El nombre es requerido (máx. 100 caracteres).</div>
+                                <input type="text" class="form-control" id="contacto-nombre" placeholder="Ej: Juan Pérez" maxlength="100">
+                                <div class="invalid-feedback">El nombre es requerido (máx. 100 caracteres).</div>
                             </div>
                             <div class="mb-3">
                                 <label for="contacto-correo" class="form-label fw-bold">Correo Electrónico *</label>
-                                <input type="email" class="form-control" id="contacto-correo" placeholder="correo@gmail.com">
-                                <div class="is-invalid-feedback">Ingresa un correo válido.</div>
+                                <input type="email" class="form-control" id="contacto-correo" placeholder="correo@gmail.com" maxlength="100">
+                                <div class="invalid-feedback">Ingresa un correo válido (@inacap.cl, @inacapmail.cl o @gmail.com).</div>
                             </div>
                             <div class="mb-3">
                                 <div class="d-flex justify-content-between">
                                     <label for="contacto-comentario" class="form-label fw-bold">Consulta *</label>
                                     <small id="char-counter" class="text-muted">0/500</small>
                                 </div>
-                                <textarea class="form-control" id="contacto-comentario" rows="4" placeholder="Escribe tu mensaje..."></textarea>
-                                <div class="is-invalid-feedback">El comentario es requerido.</div>
+                                <textarea class="form-control" id="contacto-comentario" rows="4" placeholder="Escribe tu mensaje..." maxlength="500"></textarea>
+                                <div class="invalid-feedback">El comentario es requerido (máx. 500 caracteres).</div>
                             </div>
                             <div class="d-grid">
                                 <button type="submit" class="btn btn-primary-hh py-2">Enviar Mensaje</button>
