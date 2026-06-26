@@ -25,6 +25,8 @@ window.redireccionarA = function(pagina) {
         window.location.href = isInComponents ? "productos.html" : "src/components/productos.html";
     } else if (pagina === "carrito.html") {
         window.location.href = isInComponents ? "carrito.html" : "src/components/carrito.html";
+    } else if (pagina === "contacto.html") {
+        window.location.href = isInComponents ? "contacto.html" : "src/components/contacto.html";
     } else if (pagina === "blog.html") {
         window.location.href = isInComponents ? "blog.html" : "src/components/blog.html";
     }
@@ -43,6 +45,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (typeof inicializarProductos === "function") inicializarProductos();
     } else if (path.includes("carrito.html")) {
         if (typeof inicializarCarrito === "function") inicializarCarrito();
+    } else if (path.includes("contacto.html")) {
+        if (typeof inicializarContacto === "function") inicializarContacto();
     } else if (path.includes("login.html")) {
         if (typeof inicializarLoginRegistro === "function") inicializarLoginRegistro();
         // Si hay sesión activa, activar directamente la pestaña Mi Perfil
@@ -79,11 +83,11 @@ function inicializarNavbarComun() {
     if (inicioLink) {
         inicioLink.href = indexLink;
         // Para los enlaces de scroll si estamos en subcarpetas
-        const nosotrosLink = document.getElementById("nav-nosotros");
         const contactoLink = document.getElementById("nav-contacto");
-        if (nosotrosLink) nosotrosLink.href = indexLink + "#nosotros";
-        if (contactoLink) contactoLink.href = indexLink + "#contacto";
+        if (contactoLink) contactoLink.href = prefix + "contacto.html";
     }
+    const nosotrosLink = document.getElementById("nav-nosotros");
+    if (nosotrosLink) nosotrosLink.href = prefix + "nosotros.html";
     if (productosLink) productosLink.href = prefix + "productos.html";
     if (blogLink) blogLink.href = prefix + "blog.html";
     if (carritoLink) carritoLink.href = prefix + "carrito.html";
@@ -103,21 +107,34 @@ function inicializarNavbarComun() {
     const usuarioSesion = JSON.parse(localStorage.getItem("usuario_sesion"));
     if (loginLink) {
         if (usuarioSesion) {
-            loginLink.innerHTML = `<i class="fa-solid fa-right-from-bracket me-1"></i> Cerrar Sesión`;
-            loginLink.href = "#";
-            loginLink.className = "btn btn-outline-danger";
-            loginLink.onclick = (e) => {
-                e.preventDefault();
-                localStorage.removeItem("usuario_sesion");
-                localStorage.setItem("rol_simulado", "Cliente");
-                alert("Sesión cerrada con éxito.");
-                window.location.href = isInComponents ? "../../index.html" : "index.html";
-            };
+            loginLink.innerHTML = `<i class="fa-solid fa-user-pen me-1"></i> Mi Perfil`;
+            loginLink.href = prefix + "login.html#perfil";
+            loginLink.className = "btn btn-primary-hh";
+            loginLink.onclick = null;
+
+            if (!document.getElementById("nav-logout-btn")) {
+                const logoutBtn = document.createElement("a");
+                logoutBtn.id = "nav-logout-btn";
+                logoutBtn.href = "#";
+                logoutBtn.className = "btn btn-outline-danger ms-2";
+                logoutBtn.innerHTML = `<i class="fa-solid fa-right-from-bracket"></i> Salir`;
+                logoutBtn.onclick = (e) => {
+                    e.preventDefault();
+                    localStorage.removeItem("usuario_sesion");
+                    localStorage.setItem("rol_simulado", "Cliente");
+                    alert("Sesión cerrada con éxito.");
+                    window.location.href = isInComponents ? "../../index.html" : "index.html";
+                };
+                loginLink.parentNode.appendChild(logoutBtn);
+            }
         } else {
             loginLink.innerHTML = `<i class="fa-solid fa-user me-1"></i> Mi Cuenta`;
             loginLink.href = prefix + "login.html";
             loginLink.className = "btn btn-primary-hh";
             loginLink.onclick = null;
+            
+            const logoutBtn = document.getElementById("nav-logout-btn");
+            if (logoutBtn) logoutBtn.remove();
         }
     }
 

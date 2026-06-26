@@ -33,9 +33,9 @@
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item"><a class="nav-link nav-link-hh" href="index.html" id="nav-inicio">Inicio</a></li>
                     <li class="nav-item"><a class="nav-link nav-link-hh" href="src/components/productos.html" id="nav-productos">Productos</a></li>
-                    <li class="nav-item"><a class="nav-link nav-link-hh" href="index.html#nosotros" id="nav-nosotros">Nosotros</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-hh" href="src/components/nosotros.html" id="nav-nosotros">Nosotros</a></li>
                     <li class="nav-item"><a class="nav-link nav-link-hh" href="src/components/blog.html" id="nav-blog">Blog</a></li>
-                    <li class="nav-item"><a class="nav-link nav-link-hh" href="index.html#contacto" id="nav-contacto">Contacto</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-hh" href="src/components/contacto.html" id="nav-contacto">Contacto</a></li>
                     <li class="nav-item"><a class="nav-link nav-link-hh" id="admin-nav-link" href="src/components/admin.html" style="display: none;"><b>Admin Panel</b></a></li>
                 </ul>
                 <div class="d-flex align-items-center gap-3">
@@ -69,7 +69,7 @@
                     <p class="fs-5 text-muted mb-4">HuertoHogar conecta a los agricultores de Chile directamente con tu hogar. Frutas y verduras frescas, orgánicas y cultivadas de forma sostenible.</p>
                     <div class="d-flex flex-wrap gap-3 justify-content-center justify-content-md-start">
                         <a href="src/components/productos.html" class="btn btn-lg btn-primary-hh px-4 py-3 fs-6">Ver Productos en Venta</a>
-                        <a href="index.html#nosotros" class="btn btn-lg btn-outline-dark px-4 py-3 fs-6">Conócenos</a>
+                        <a href="src/components/nosotros.html" class="btn btn-lg btn-outline-dark px-4 py-3 fs-6">Conócenos</a>
                     </div>
                 </div>
             </div>
@@ -122,86 +122,26 @@
         </div>
     </section>
 
-    <!-- SECCIÓN NOSOTROS Y MAPA -->
-    <section id="nosotros" class="py-5">
+    <!-- SECCIÓN PRESENCIA NACIONAL (MAPA) -->
+    <section class="py-5">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-6 mb-4 mb-lg-0">
-                    <span class="text-uppercase text-success fw-bold">Sobre HuertoHogar</span>
-                    <h2 class="display-5 mb-4">Nuestra Misión y Visión</h2>
-                    <div class="card border-0 bg-transparent mb-4">
-                        <div class="card-body p-0">
-                            <h5 class="text-success"><i class="fa-solid fa-bullseye me-2"></i> Misión</h5>
-                            <p class="text-muted">Proporcionar productos frescos y de calidad directamente desde el campo hasta la puerta de nuestros clientes, apoyando prácticas agrícolas sostenibles y promoviendo una alimentación saludable en todos los hogares chilenos.</p>
-                        </div>
-                    </div>
-                    <div class="card border-0 bg-transparent">
-                        <div class="card-body p-0">
-                            <h5 class="text-success"><i class="fa-solid fa-eye me-2"></i> Visión</h5>
-                            <p class="text-muted">Ser la tienda online líder en la distribución de productos frescos y naturales en Chile, reconocida por nuestra calidad excepcional, servicio al cliente y compromiso inquebrantable con la sostenibilidad.</p>
-                        </div>
-                    </div>
+                <div class="col-lg-5 mb-4 mb-lg-0">
+                    <span class="text-uppercase text-success fw-bold">Nuestra Red</span>
+                    <h2 class="display-5 mb-4">Presencia a Nivel Nacional</h2>
+                    <p class="text-muted fs-5">Operamos en Santiago, Puerto Montt, Villarrica, Nacimiento, Viña del Mar, Valparaíso y Concepción. Acercamos el campo a tu mesa estés donde estés.</p>
+                    <p class="small text-muted mb-4"><i class="fa-solid fa-map-location-dot text-success me-2"></i> Haz clic en los marcadores del mapa para ver detalles de cada sucursal.</p>
+                    <a href="src/components/nosotros.html" class="btn btn-outline-success px-4 py-2">Conoce Más Sobre Nosotros</a>
                 </div>
-                <div class="col-lg-6">
-                    <h5 class="text-center text-lg-start mb-3"><i class="fa-solid fa-map-location-dot text-success me-2"></i> Puntos de Venta y Despacho</h5>
-                    <p class="small text-muted text-center text-lg-start">Operamos en Santiago, Puerto Montt, Villarrica, Nacimiento, Viña del Mar, Valparaíso y Concepción. Haz clic en los marcadores del mapa para ver detalles.</p>
+                <div class="col-lg-7">
                     <!-- Leaflet MAP -->
-                    <div id="mapa-nosotros"></div>
+                    <div id="mapa-nosotros" style="height: 400px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);"></div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- SECCIÓN CONTACTO -->
-    <section id="contacto" class="py-5" style="background-color: #f1f3f5;">
-        <div class="container" style="max-width: 700px;">
-            <div class="text-center mb-4">
-                <h2>¿Tienes Consultas? Escríbenos</h2>
-                <p class="text-muted">Envíanos tus comentarios, sugerencias o dudas. Te responderemos en un plazo máximo de 24 horas hábiles.</p>
-            </div>
-            <div class="card shadow-sm border-0 p-4 rounded-3">
-                <form id="form-contacto">
-                    <!-- Nombre -->
-                    <div class="mb-3">
-                        <label for="contacto-nombre" class="form-label fw-bold">Nombre Completo *</label>
-                        <input type="text" class="form-control" id="contacto-nombre" placeholder="Ej: Juan Pérez">
-                        <div class="is-invalid-feedback">El nombre es requerido (máx. 100 caracteres).</div>
-                    </div>
-                    <!-- Correo -->
-                    <div class="mb-3">
-                        <label for="contacto-correo" class="form-label fw-bold">Correo Electrónico *</label>
-                        <input type="email" class="form-control" id="contacto-correo" placeholder="correo@gmail.com o correo@inacap.cl">
-                        <div class="is-invalid-feedback">Correo requerido. Máx 100 chars. Dominios permitidos: @inacap.cl, @profesor.inacap.cl o @gmail.com.</div>
-                    </div>
-                    <!-- Comentario -->
-                    <div class="mb-3">
-                        <div class="d-flex justify-content-between">
-                            <label for="contacto-comentario" class="form-label fw-bold">Comentario o Consulta *</label>
-                            <small id="char-counter" class="text-muted">0/500</small>
-                        </div>
-                        <textarea class="form-control" id="contacto-comentario" rows="4" placeholder="Escribe tu mensaje aquí..."></textarea>
-                        <div class="is-invalid-feedback">El comentario es requerido y no debe superar los 500 caracteres.</div>
-                    </div>
-                    <!-- Botón Enviar -->
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-primary-hh btn-lg py-2">Enviar Mensaje</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </section>
 
-    <!-- TOAST NOTIFICACIÓN ÉXITO CONTACTO -->
-    <div class="toast-container position-fixed bottom-0 end-0 p-3">
-        <div id="toast-contacto-success" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="d-flex">
-                <div class="toast-body">
-                    ✅ ¡Mensaje enviado con éxito! Nos pondremos en contacto pronto.
-                </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-        </div>
-    </div>
 
     <!-- FOOTER (Direct Embed for file:// compatibility) -->
     <footer class="footer-hh py-4 mt-5">
@@ -225,12 +165,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     
     <!-- Scripts Propios -->
-    <script src="src/js/datos.js?v=6"></script>
-    <script src="src/js/validaciones.js?v=6"></script>
-    <script src="src/js/tienda.js?v=6"></script>
-    <script src="src/js/carrito.js?v=6"></script>
-    <script src="src/js/admin.js?v=6"></script>
-    <script src="src/js/main.js?v=6"></script>
+    <script src="src/js/datos.js?v=14"></script>
+    <script src="src/js/validaciones.js?v=14"></script>
+    <script src="src/js/tienda.js?v=14"></script>
+    <script src="src/js/carrito.js?v=14"></script>
+    <script src="src/js/admin.js?v=14"></script>
+    <script src="src/js/main.js?v=14"></script>
 
 </body>
 </html>

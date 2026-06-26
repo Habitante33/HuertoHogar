@@ -5,32 +5,17 @@
 // ==========================================
 function inicializarIndex() {
     // 1.1 Cargar Mapa Leaflet.js
-    const mapElement = document.getElementById("mapa-nosotros");
-    if (mapElement && typeof L !== "undefined") {
-        const mapa = L.map('mapa-nosotros').setView([-36.5, -72.0], 5);
-        
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap contributors'
-        }).addTo(mapa);
+    inicializarMapa();
 
-        const sucursales = [
-            { ciudad: "Santiago", lat: -33.4489, lng: -70.6693, desc: "Casa Matriz y Distribución Central" },
-            { ciudad: "Viña del Mar", lat: -33.0245, lng: -71.5518, desc: "Sucursal Viña del Mar" },
-            { ciudad: "Valparaíso", lat: -33.0472, lng: -71.6127, desc: "Punto de Reparto Orgánico" },
-            { ciudad: "Concepción", lat: -36.8201, lng: -73.0444, desc: "Distribuidora Regional del Biobío" },
-            { ciudad: "Nacimiento", lat: -37.5028, lng: -72.6781, desc: "Sucursal y Productores Locales" },
-            { ciudad: "Villarrica", lat: -39.2789, lng: -72.2272, desc: "Sucursal Zona Sur Verde" },
-            { ciudad: "Puerto Montt", lat: -41.4693, lng: -72.9424, desc: "Sucursal Austral HuertoHogar" }
-        ];
+    // 1.3 Cargar Productos Destacados
+    renderizarProductosDestacados();
+}
 
-        sucursales.forEach(s => {
-            L.marker([s.lat, s.lng])
-                .addTo(mapa)
-                .bindPopup(`<b>HuertoHogar ${s.ciudad}</b><br>${s.desc}`);
-        });
-    }
+function inicializarContacto() {
+    // Inicializar mapa también en Contacto
+    inicializarMapa();
 
-    // 1.2 Validación de Formulario de Contacto
+    // Validación de Formulario de Contacto
     const formContacto = document.getElementById("form-contacto");
     const inputComentario = document.getElementById("contacto-comentario");
     const charCounter = document.getElementById("char-counter");
@@ -49,22 +34,34 @@ function inicializarIndex() {
             
             // REF-05: Validación del formulario de contacto declarativa
             const valido = validarFormulario({
-                "contacto-nombre": { required: true, maxLength: 100 },
-                "contacto-correo": { required: true, maxLength: 100, pattern: /^[a-zA-Z0-9._%+-]+@(?:inacap\.cl|profesor\.inacap\.cl|gmail\.com)$/ },
-                "contacto-comentario": { required: true, maxLength: 500 }
+                "contacto-nombre": [
+                    { regla: "requerido", mensaje: "El nombre es obligatorio." },
+                    { regla: "max:100", mensaje: "Máximo 100 caracteres." }
+                ],
+                "contacto-correo": [
+                    { regla: "requerido", mensaje: "El correo es obligatorio." },
+                    { regla: "email", mensaje: "Ingresa un correo válido (ej: nombre@gmail.com)." },
+                    { regla: "max:100", mensaje: "Máximo 100 caracteres." },
+                    { regla: "dominio", dominios: ["inacap.cl", "profesor.inacap.cl", "gmail.com"], mensaje: "Dominio debe ser @inacap.cl, @profesor.inacap.cl o @gmail.com." }
+                ],
+                "contacto-comentario": [
+                    { regla: "requerido", mensaje: "El comentario es obligatorio." },
+                    { regla: "max:500", mensaje: "El comentario no puede exceder los 500 caracteres." }
+                ]
             });
 
             if (valido) {
-                const toast = new bootstrap.Toast(document.getElementById("toast-contacto-success"));
-                toast.show();
-                formContacto.reset();
-                if (charCounter) charCounter.textContent = "0/500";
+                // Simular envío exitoso
+                const toastEl = document.getElementById('toast-contacto-success');
+                if (toastEl) {
+                    const toast = new bootstrap.Toast(toastEl);
+                    toast.show();
+                    formContacto.reset();
+                    if (charCounter) charCounter.textContent = "0/500";
+                }
             }
         });
     }
-
-    // 1.3 Cargar Productos Destacados
-    renderizarProductosDestacados();
 }
 
 function renderizarProductosDestacados() {
@@ -270,5 +267,23 @@ function crearTarjetaProductoHTML(p, isDestacado = false) {
 window.agregarRapidoCarritoModal = function(id) {
     if (typeof agregarAlCarrito === "function") {
         agregarAlCarrito(id, 1);
+    }
+}
+
+function inicializarMapa() {
+    const mapElement = document.getElementById("mapa-nosotros");
+    if (mapElement && typeof L !== "undefined" && !mapElement.classList.contains("leaflet-container")) {
+        const mapa = L.map("mapa-nosotros").setView([-36.5, -72.0], 5);
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { attribution: "© OpenStreetMap contributors" }).addTo(mapa);
+        const sucursales = [
+            { ciudad: "Santiago", lat: -33.4489, lng: -70.6693, desc: "Casa Matriz y Distribución Central" },
+            { ciudad: "Viña del Mar", lat: -33.0245, lng: -71.5518, desc: "Sucursal Viña del Mar" },
+            { ciudad: "Valparaíso", lat: -33.0472, lng: -71.6127, desc: "Punto de Reparto Orgánico" },
+            { ciudad: "Concepción", lat: -36.8201, lng: -73.0444, desc: "Distribuidora Regional del Biobío" },
+            { ciudad: "Nacimiento", lat: -37.5028, lng: -72.6781, desc: "Sucursal y Productores Locales" },
+            { ciudad: "Villarrica", lat: -39.2789, lng: -72.2272, desc: "Sucursal Zona Sur Verde" },
+            { ciudad: "Puerto Montt", lat: -41.4693, lng: -72.9424, desc: "Sucursal Austral HuertoHogar" }
+        ];
+        sucursales.forEach(s => L.marker([s.lat, s.lng]).addTo(mapa).bindPopup(`<b>HuertoHogar ${s.ciudad}</b><br>${s.desc}`));
     }
 }

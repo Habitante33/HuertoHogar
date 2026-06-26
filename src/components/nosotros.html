@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HuertoHogar - Catálogo de Productos</title>
+    <title>HuertoHogar - Nosotros</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,8 +30,8 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item"><a class="nav-link nav-link-hh" href="../../index.html" id="nav-inicio">Inicio</a></li>
-                    <li class="nav-item"><a class="nav-link nav-link-hh active" href="productos.html" id="nav-productos">Productos</a></li>
-                    <li class="nav-item"><a class="nav-link nav-link-hh" href="nosotros.html" id="nav-nosotros">Nosotros</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-hh" href="productos.html" id="nav-productos">Productos</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-hh active" href="nosotros.html" id="nav-nosotros">Nosotros</a></li>
                     <li class="nav-item"><a class="nav-link nav-link-hh" href="blog.html" id="nav-blog">Blog</a></li>
                     <li class="nav-item"><a class="nav-link nav-link-hh" href="contacto.html" id="nav-contacto">Contacto</a></li>
                     <li class="nav-item"><a class="nav-link nav-link-hh" id="admin-nav-link" href="admin.html" style="display: none;"><b>Admin Panel</b></a></li>
@@ -57,47 +57,32 @@
         </div>
     </nav>
 
-    <!-- HEADER DE SECCIÓN -->
-    <div class="py-4 bg-light border-bottom mb-5">
-        <div class="container text-center">
-            <h1 class="display-5 fw-bold">Nuestro Catálogo</h1>
-            <p class="text-muted">Filtra por categoría o busca tu producto favorito. Agrégalo al carrito en un clic.</p>
-        </div>
-    </div>
-
-    <!-- BUSCADOR Y FILTROS -->
-    <div class="container mb-4">
-        <div class="row g-3 justify-content-between align-items-center">
-            <!-- Selector de Categoría (Dinámico con colores) -->
-            <div class="col-lg-8" id="categorias-filtro-container">
-                <div class="d-flex flex-wrap gap-2">
-                    <button class="btn category-filter-btn active" data-categoria="Todos">Todos</button>
-                    <button class="btn category-filter-btn" data-categoria="Frutas Frescas">🍎 Frutas</button>
-                    <button class="btn category-filter-btn" data-categoria="Verduras Orgánicas">🥬 Verduras</button>
-                    <button class="btn category-filter-btn" data-categoria="Productos Orgánicos">🍯 Orgánicos</button>
-                    <button class="btn category-filter-btn" data-categoria="Productos Lácteos">🥛 Lácteos</button>
-                </div>
-            </div>
-            <!-- Campo de Búsqueda -->
-            <div class="col-lg-4">
-                <div class="input-group">
-                    <span class="input-group-text bg-white border-end-0 text-muted">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                    </span>
-                    <input type="text" id="buscador-producto" class="form-control border-start-0" placeholder="Buscar producto o código...">
+    <div style="padding-top: 20px;"></div>
+    <!-- SECCIÓN NOSOTROS -->
+    <section id="nosotros" class="py-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8 mx-auto text-center mb-4 mb-lg-0">
+                    <span class="text-uppercase text-success fw-bold">Sobre HuertoHogar</span>
+                    <h2 class="display-5 mb-4">Nuestra Misión y Visión</h2>
+                    <div class="card border-0 bg-transparent mb-4">
+                        <div class="card-body p-0">
+                            <h5 class="text-success"><i class="fa-solid fa-bullseye me-2"></i> Misión</h5>
+                            <p class="text-muted">Proporcionar productos frescos y de calidad directamente desde el campo hasta la puerta de nuestros clientes, apoyando prácticas agrícolas sostenibles y promoviendo una alimentación saludable en todos los hogares chilenos.</p>
+                        </div>
+                    </div>
+                    <div class="card border-0 bg-transparent">
+                        <div class="card-body p-0">
+                            <h5 class="text-success"><i class="fa-solid fa-eye me-2"></i> Visión</h5>
+                            <p class="text-muted">Ser la tienda online líder en la distribución de productos frescos y naturales en Chile, reconocida por nuestra calidad excepcional, servicio al cliente y compromiso inquebrantable con la sostenibilidad.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- GRID DE PRODUCTOS -->
-    <div class="container">
-        <div class="row" id="catalogo-grid">
-            <!-- Renderizado dinámico -->
-        </div>
-    </div>
-
-    <!-- FOOTER (Direct Embed for file:// compatibility) -->
+    <!-- FOOTER -->
     <footer class="footer-hh py-4 mt-5">
         <div class="container text-center">
             <img src="../assets/imagenes/logoHuerto.jpeg" alt="Logo HuertoHogar" style="height: 50px; border-radius: 8px; margin-bottom: 10px; object-fit: cover;">
