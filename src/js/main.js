@@ -256,6 +256,79 @@ window.mostrarNotificacion = function(mensaje, tipo = "success") {
     }, 4000);
 };
 
+window.confirmHH = function(mensaje) {
+    return new Promise((resolve) => {
+        let container = document.getElementById("toast-container-hh");
+        if (!container) return resolve(false);
+        
+        const toast = document.createElement("div");
+        toast.className = `toast-hh toast-hh-warning`; 
+        toast.innerHTML = `
+            <div class="toast-hh-content flex-column align-items-start w-100">
+                <div class="d-flex align-items-center mb-2 w-100">
+                    <span class="toast-hh-icon" style="color: #f39c12;"><i class="fa-solid fa-circle-question"></i></span>
+                    <span class="toast-hh-message">${mensaje}</span>
+                </div>
+                <div class="d-flex gap-2 w-100 mt-1">
+                    <button class="btn btn-sm btn-success flex-grow-1 btn-confirm-yes">Sí</button>
+                    <button class="btn btn-sm btn-secondary flex-grow-1 btn-confirm-no">No</button>
+                </div>
+            </div>
+        `;
+        container.appendChild(toast);
+        
+        toast.querySelector(".btn-confirm-yes").onclick = () => {
+            toast.classList.add("toast-hh-fadeout");
+            setTimeout(() => toast.remove(), 300);
+            resolve(true);
+        };
+        toast.querySelector(".btn-confirm-no").onclick = () => {
+            toast.classList.add("toast-hh-fadeout");
+            setTimeout(() => toast.remove(), 300);
+            resolve(false);
+        };
+    });
+};
+
+window.promptHH = function(mensaje) {
+    return new Promise((resolve) => {
+        let container = document.getElementById("toast-container-hh");
+        if (!container) return resolve(null);
+
+        const toast = document.createElement("div");
+        toast.className = `toast-hh toast-hh-info`;
+        toast.innerHTML = `
+            <div class="toast-hh-content flex-column align-items-start w-100">
+                <div class="d-flex align-items-center mb-2 w-100">
+                    <span class="toast-hh-icon" style="color: #3498db;"><i class="fa-solid fa-keyboard"></i></span>
+                    <span class="toast-hh-message">${mensaje}</span>
+                </div>
+                <input type="password" class="form-control form-control-sm mb-2 prompt-hh-input" placeholder="Contraseña..." />
+                <div class="d-flex gap-2 w-100">
+                    <button class="btn btn-sm btn-primary-hh flex-grow-1 btn-prompt-ok">Aceptar</button>
+                    <button class="btn btn-sm btn-secondary flex-grow-1 btn-prompt-cancel">Cancelar</button>
+                </div>
+            </div>
+        `;
+        container.appendChild(toast);
+        
+        const input = toast.querySelector(".prompt-hh-input");
+        setTimeout(() => input.focus(), 50);
+        
+        toast.querySelector(".btn-prompt-ok").onclick = () => {
+            const val = input.value;
+            toast.classList.add("toast-hh-fadeout");
+            setTimeout(() => toast.remove(), 300);
+            resolve(val);
+        };
+        toast.querySelector(".btn-prompt-cancel").onclick = () => {
+            toast.classList.add("toast-hh-fadeout");
+            setTimeout(() => toast.remove(), 300);
+            resolve(null);
+        };
+    });
+};
+
 // Sobrescribir window.alert para usar el nuevo sistema
 const originalAlert = window.alert;
 window.alert = function(mensaje) {

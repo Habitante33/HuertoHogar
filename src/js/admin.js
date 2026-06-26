@@ -1008,8 +1008,8 @@ window.abrirVerProducto = function(id) {
     form.querySelector("button[type='submit']").style.display = "none";
 }
 
-window.eliminarProductoAdmin = function(id) {
-    if (confirm(`¿Eliminar producto ${id}?`)) {
+window.eliminarProductoAdmin = async function(id) {
+    if (await confirmHH(`¿Eliminar producto ${id}?`)) {
         // REF-12: Operaciones CRUD del Administrador (Eliminar producto)
         DB.remove("productos", id);
         renderizarTablaProductos();
@@ -1029,14 +1029,14 @@ window.abrirCrearUsuario = function() {
     bootstrap.Modal.getOrCreateInstance(document.getElementById("modalUsuarioAdmin")).show();
 }
 
-window.abrirEditarUsuario = function(run, isVer = false) {
+window.abrirEditarUsuario = async function(run, isVer = false) {
     const usuarios = DB.get("usuarios");
     const u = usuarios.find(usr => usr.run === run);
     if (!u) return;
 
     // REF-12: Operaciones CRUD del Administrador (Prompt de contraseña para Admin)
     if (!isVer && u.tipo === "Administrador") {
-        const password = prompt("Por favor, ingrese la contraseña de este Administrador para confirmar la edición:");
+        const password = await promptHH("Por favor, ingrese la contraseña de este Administrador para confirmar la edición:");
         if (password === null) return;
         if (password !== u.contrasena) {
             alert("Error: Contraseña incorrecta. No se puede editar este administrador.");
@@ -1080,7 +1080,7 @@ window.abrirVerUsuario = function(run) {
     form.querySelector("button[type='submit']").style.display = "none";
 }
 
-window.eliminarUsuarioAdmin = function(run) {
+window.eliminarUsuarioAdmin = async function(run) {
     const usuarioActivo = DB.get("usuario_sesion", null);
     if (usuarioActivo && usuarioActivo.run === run) {
         alert("Error: No puedes eliminarte a ti mismo.");
@@ -1093,7 +1093,7 @@ window.eliminarUsuarioAdmin = function(run) {
 
     // REF-12: Operaciones CRUD del Administrador (Prompt de contraseña para Admin)
     if (u.tipo === "Administrador") {
-        const password = prompt("Por favor, ingrese la contraseña de este Administrador para confirmar la eliminación:");
+        const password = await promptHH("Por favor, ingrese la contraseña de este Administrador para confirmar la eliminación:");
         if (password === null) return;
         if (password !== u.contrasena) {
             alert("Error: Contraseña incorrecta. No se puede eliminar este administrador.");
@@ -1101,7 +1101,7 @@ window.eliminarUsuarioAdmin = function(run) {
         }
     }
 
-    if (confirm(`¿Eliminar usuario ${run}?`)) {
+    if (await confirmHH(`¿Eliminar usuario ${run}?`)) {
         // REF-12: Operaciones CRUD del Administrador (Eliminar usuario)
         DB.remove("usuarios", run, "run");
         renderizarTablaUsuarios();
