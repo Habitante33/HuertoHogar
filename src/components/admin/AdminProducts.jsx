@@ -1,5 +1,5 @@
 import React from 'react';
-import { getEmojiPorCategoria, getShortLabel } from '../TarjetaProducto';
+import { getEmojiPorCategoria } from '../TarjetaProducto';
 
 export default function AdminProducts({
     productosFiltrados,
@@ -93,7 +93,7 @@ export default function AdminProducts({
                                                 {p.stock <= p.stockCritico && <span className="badge bg-danger small ms-1">Crítico</span>}
                                             </div>
                                         </td>
-                                        <td>{getShortLabel(p.categoria)}</td>
+                                        <td>{p.categoria}</td>
                                         <td className="fw-bold text-success">${p.precio.toLocaleString("es-CL")} CLP</td>
                                         <td>{p.stock} unid. <small className="text-muted d-block">(Crit: {p.stockCritico})</small></td>
                                         <td>
@@ -177,7 +177,7 @@ export default function AdminProducts({
                                                     onChange={handleProdChange}
                                                 >
                                                     {categorias.map(cat => (
-                                                        <option key={cat} value={cat}>{getShortLabel(cat)}</option>
+                                                        <option key={cat} value={cat}>{cat}</option>
                                                     ))}
                                                 </select>
                                             </div>

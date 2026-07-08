@@ -1,5 +1,4 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 
 export default function AdminUsers({
     usuariosFiltrados,
@@ -22,8 +21,6 @@ export default function AdminUsers({
     regiones,
     comunasDisponibles
 }) {
-    const navigate = useNavigate();
-
     return (
         <div>
             <div className="mb-4">
@@ -87,7 +84,7 @@ export default function AdminUsers({
                                                 {u.tipo === 'Cliente' && (
                                                     <button 
                                                         className="btn btn-xs btn-outline-success d-flex align-items-center gap-1"
-                                                        onClick={() => navigate(`/admin/users/${u.run}/history`)}
+                                                        onClick={() => setHistorialUsuario(u)}
                                                         title="Ver compras anteriores"
                                                     >
                                                         <i className="fa-solid fa-clock-rotate-left"></i> Historial
@@ -235,14 +232,13 @@ export default function AdminUsers({
                                                 <label className="form-label small fw-bold">Correo Electrónico *</label>
                                                 <input 
                                                     type="email" 
-                                                    className={`form-control form-control-sm ${usrErrors.correo ? 'is-invalid' : usrForm.correo ? 'is-valid' : ''}`}
+                                                    className={`form-control form-control-sm ${usrErrors.correo ? 'is-invalid' : ''}`}
                                                     id="correo" 
                                                     value={usrForm.correo}
                                                     onChange={handleUsrChange}
                                                     maxLength="100"
-                                                    aria-invalid={Boolean(usrErrors.correo)}
                                                 />
-                                                <div className={`invalid-feedback ${usrErrors.correo ? 'd-block' : ''}`}>Ingresa un correo corporativo (@inacap.cl, @inacapmail.cl) o de Gmail.</div>
+                                                <div className="invalid-feedback">Ingresa un correo corporativo (@inacap.cl, @inacapmail.cl) o de Gmail.</div>
                                             </div>
 
                                             <div className="col-md-6">

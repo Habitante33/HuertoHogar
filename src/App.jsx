@@ -19,8 +19,6 @@ import Checkout from './pages/Checkout';
 import CompraExitosa from './pages/CompraExitosa';
 import CompraFallida from './pages/CompraFallida';
 import AdminPanel from './pages/AdminPanel';
-import AdminOrderDetail from './components/admin/AdminOrderDetail';
-import AdminUserHistory from './components/admin/AdminUserHistory';
 
 export default function App() {
     return (
@@ -44,14 +42,6 @@ export default function App() {
                         <Route path="checkout/success" element={<CompraExitosa />} />
                         <Route path="checkout/failure" element={<CompraFallida />} />
                         <Route path="admin" element={<AdminPanel />} />
-                        <Route path="admin/orders" element={<AdminPanel />} />
-                        <Route path="admin/products" element={<AdminPanel />} />
-                        <Route path="admin/categories" element={<AdminPanel />} />
-                        <Route path="admin/users" element={<AdminPanel />} />
-                        <Route path="admin/reports" element={<AdminPanel />} />
-                        <Route path="admin/profile" element={<AdminPanel />} />
-                        <Route path="admin/orders/:id" element={<AdminOrderDetail />} />
-                        <Route path="admin/users/:id/history" element={<AdminUserHistory />} />
                         
                         {/* Redireccionar cualquier ruta inválida al inicio */}
                         <Route path="*" element={<Home />} />

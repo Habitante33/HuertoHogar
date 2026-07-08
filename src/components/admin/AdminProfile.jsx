@@ -49,14 +49,13 @@ export default function AdminProfile({
                             />
                         </div>
                         <div className="col-12">
-                            <label className="form-label small fw-bold">Contraseña actual para validar *</label>
+                            <label className="form-label small fw-bold">Contraseña de Acceso *</label>
                             <input 
-                                type="password" 
+                                type="text" 
                                 className={`form-control ${perfilErrors.contrasena ? 'is-invalid' : ''}`}
                                 id="contrasena"
                                 value={perfilForm.contrasena}
                                 onChange={handlePerfilChange}
-                                placeholder="Ingresa tu contraseña actual"
                             />
                         </div>
                         <div className="col-md-6">

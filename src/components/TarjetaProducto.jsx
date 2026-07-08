@@ -1,48 +1,24 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
-import { useCart } from '../context/CartContext';
 
 export function getEmojiPorCategoria(cat) {
-    if (!cat) return "📦";
-    const lower = cat.toLowerCase();
-    if (lower.includes("fruta")) return "🍎";
-    if (lower.includes("verdura")) return "🥬";
-    if (lower.includes("orgán") || lower.includes("organ")) return "🍯";
-    if (lower.includes("láct") || lower.includes("lact")) return "🥛";
-    return "📦";
-}
-
-export function getShortLabel(cat) {
-    if (!cat) return "";
-    const lower = cat.toLowerCase();
-    if (lower.includes("fruta")) return "Frutas";
-    if (lower.includes("verdura")) return "Verduras";
-    if (lower.includes("orgán") || lower.includes("organ")) return "Orgánicos";
-    if (lower.includes("láct") || lower.includes("lact")) return "Lácteos";
-    return cat;
+    const emojis = {
+        "Frutas Frescas": "🍎",
+        "Verduras Orgánicas": "🥬",
+        "Productos Orgánicos": "🍯",
+        "Productos Lácteos": "🥛"
+    };
+    return emojis[cat] || "📦";
 }
 
 export default function TarjetaProducto({ producto, isDestacado = false }) {
-    const { carrito, agregarAlCarrito } = useCart();
-    const { mostrarNotificacion } = useContext(AppContext);
+    const { carrito, agregarAlCarrito } = useContext(AppContext);
     
     // Obtener cantidad de este producto ya agregada al carrito
     const itemEnCarrito = carrito.find(item => item.id === producto.id);
     const cantidadEnCarrito = itemEnCarrito ? itemEnCarrito.cantidad : 0;
     const stockDisponible = Math.max(0, producto.stock - cantidadEnCarrito);
-
-    const handleAgregar = () => {
-        const agregado = agregarAlCarrito(producto.id, 1);
-        if (agregado) {
-            mostrarNotificacion(`Producto agregado al carrito: ${producto.nombre}`, 'success');
-            if (stockDisponible - 1 === 0) {
-                mostrarNotificacion('Ya no queda stock de este producto.', 'warning');
-            }
-        } else {
-            mostrarNotificacion('No se pudo agregar el producto. Verifica el stock disponible.', 'warning');
-        }
-    };
 
     return (
         <div className="card h-100 card-product position-relative shadow-sm border-0">
@@ -133,7 +109,7 @@ export default function TarjetaProducto({ producto, isDestacado = false }) {
                                 <div className="col-6">
                                     <button 
                                         className="btn btn-sm btn-primary-hh w-100" 
-                                        onClick={handleAgregar}
+                                        onClick={() => agregarAlCarrito(producto.id, 1)}
                                         disabled={stockDisponible <= 0}
                                     >
                                         {stockDisponible <= 0 ? 'Sin Stock' : 'Añadir'}

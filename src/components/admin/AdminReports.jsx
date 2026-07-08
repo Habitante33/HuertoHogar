@@ -1,5 +1,4 @@
 import React from 'react';
-import { getShortLabel } from '../TarjetaProducto';
 
 export default function AdminReports({ ordenes, ventasPorCategoria, maxVentaCat, productos, usuarios }) {
     const totalVendido = ordenes.reduce((sum, o) => sum + o.total, 0);
@@ -27,7 +26,7 @@ export default function AdminReports({ ordenes, ventasPorCategoria, maxVentaCat,
                                 return (
                                     <div key={v.categoria}>
                                         <div className="d-flex justify-content-between align-items-center mb-1">
-                                            <span className="small fw-bold text-muted">{getShortLabel(v.categoria)}</span>
+                                            <span className="small fw-bold text-muted">{v.categoria}</span>
                                             <span className="small fw-bold text-success">${v.total.toLocaleString("es-CL")}</span>
                                         </div>
                                         <div className="progress" style={{ height: '10px', borderRadius: '5px' }}>

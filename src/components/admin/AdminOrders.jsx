@@ -1,8 +1,6 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 
 export default function AdminOrders({ ordenes, boletaOrden, setBoletaOrden, mostrarNotificacion }) {
-    const navigate = useNavigate();
     return (
         <div>
             <div className="mb-4">
@@ -44,7 +42,7 @@ export default function AdminOrders({ ordenes, boletaOrden, setBoletaOrden, most
                                         <td>
                                             <button 
                                                 className="btn btn-xs btn-outline-success d-flex align-items-center gap-1"
-                                                onClick={() => navigate(`/admin/orders/${orden.id}`)}
+                                                onClick={() => setBoletaOrden(orden)}
                                             >
                                                 <i className="fa-solid fa-receipt"></i> Mostrar Boleta
                                             </button>

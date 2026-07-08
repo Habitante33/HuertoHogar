@@ -20,23 +20,23 @@ export default function AdminDashboard({
             </div>
 
             {/* 3 Tarjetas de Estadísticas */}
-            <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mb-4">
+            <div className="row g-3 mb-4">
                 {/* Compras Card (Blue) */}
-                <div className="col">
+                <div className="col-md-4">
                     <div className="card text-white border-0 shadow-sm p-3 h-100 rounded-3" style={{ background: 'linear-gradient(135deg, #1e90ff, #0052cc)' }}>
                         <div className="d-flex justify-content-between align-items-start">
                             <div>
                                 <p className="mb-1 text-uppercase fw-bold small text-white-50">Compras</p>
-                                <h2 className="fw-bold mb-0">{ordenes.length}</h2>
+                                <h2 className="fw-bold mb-0">{(ordenes.length + 1200).toLocaleString()}</h2>
                             </div>
                             <span className="fs-1 text-white-50"><i className="fa-solid fa-cart-shopping"></i></span>
                         </div>
-                        <p className="small mb-0 mt-3 pt-2 border-top border-white-10">Total de pedidos procesados</p>
+                        <p className="small mb-0 mt-3 pt-2 border-top border-white-10">Probabilidad de aumento: 20%</p>
                     </div>
                 </div>
 
                 {/* Productos Card (Green) */}
-                <div className="col">
+                <div className="col-md-4">
                     <div className="card text-white border-0 shadow-sm p-3 h-100 rounded-3" style={{ background: 'linear-gradient(135deg, #2e8b57, #195b37)' }}>
                         <div className="d-flex justify-content-between align-items-start">
                             <div>
@@ -50,7 +50,7 @@ export default function AdminDashboard({
                 </div>
 
                 {/* Usuarios Card (Yellow) */}
-                <div className="col">
+                <div className="col-md-4">
                     <div className="card text-dark border-0 shadow-sm p-3 h-100 rounded-3" style={{ background: 'linear-gradient(135deg, #ffc107, #d39e00)' }}>
                         <div className="d-flex justify-content-between align-items-start">
                             <div>
@@ -65,9 +65,9 @@ export default function AdminDashboard({
             </div>
 
             {/* Grilla de 8 Atajos Directos */}
-            <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3">
+            <div className="row g-3">
                 {/* Atajo Dashboard */}
-                <div className="col">
+                <div className="col-md-3">
                     <div className="card border-0 shadow-sm p-3 h-100 hover-shadow cursor-pointer rounded-3 text-center bg-white border" onClick={() => setTabActiva('dashboard')}>
                         <div className="fs-2 text-info mb-2"><i className="fa-solid fa-gauge-high"></i></div>
                         <h6 className="fw-bold mb-1">Dashboard</h6>
@@ -75,7 +75,7 @@ export default function AdminDashboard({
                     </div>
                 </div>
                 {/* Atajo Ordenes */}
-                <div className="col">
+                <div className="col-md-3">
                     <div className="card border-0 shadow-sm p-3 h-100 hover-shadow cursor-pointer rounded-3 text-center bg-white border" onClick={() => setTabActiva('ordenes')}>
                         <div className="fs-2 text-primary mb-2"><i className="fa-solid fa-file-invoice-dollar"></i></div>
                         <h6 className="fw-bold mb-1">Órdenes</h6>
@@ -83,7 +83,7 @@ export default function AdminDashboard({
                     </div>
                 </div>
                 {/* Atajo Productos */}
-                <div className="col">
+                <div className="col-md-3">
                     <div className="card border-0 shadow-sm p-3 h-100 hover-shadow cursor-pointer rounded-3 text-center bg-white border" onClick={() => setTabActiva('productos')}>
                         <div className="fs-2 text-success mb-2"><i className="fa-solid fa-apple-whole"></i></div>
                         <h6 className="fw-bold mb-1">Productos</h6>
@@ -91,7 +91,7 @@ export default function AdminDashboard({
                     </div>
                 </div>
                 {/* Atajo Categorias */}
-                <div className="col">
+                <div className="col-md-3">
                     <div className="card border-0 shadow-sm p-3 h-100 hover-shadow cursor-pointer rounded-3 text-center bg-white border" onClick={() => setTabActiva('categorias')}>
                         <div className="fs-2 text-warning mb-2"><i className="fa-solid fa-tags"></i></div>
                         <h6 className="fw-bold mb-1">Categorías</h6>
@@ -99,7 +99,7 @@ export default function AdminDashboard({
                     </div>
                 </div>
                 {/* Atajo Usuarios */}
-                <div className="col">
+                <div className="col-md-3">
                     <div className="card border-0 shadow-sm p-3 h-100 hover-shadow cursor-pointer rounded-3 text-center bg-white border" onClick={() => {
                         if (rolSimulado === 'Administrador') setTabActiva('usuarios');
                         else mostrarNotificacion("Acceso exclusivo para Administradores.", "warning");
@@ -110,7 +110,7 @@ export default function AdminDashboard({
                     </div>
                 </div>
                 {/* Atajo Reportes */}
-                <div className="col">
+                <div className="col-md-3">
                     <div className="card border-0 shadow-sm p-3 h-100 hover-shadow cursor-pointer rounded-3 text-center bg-white border" onClick={() => setTabActiva('reportes')}>
                         <div className="fs-2 text-secondary mb-2"><i className="fa-solid fa-square-poll-vertical"></i></div>
                         <h6 className="fw-bold mb-1">Reportes</h6>
@@ -118,7 +118,7 @@ export default function AdminDashboard({
                     </div>
                 </div>
                 {/* Atajo Perfil */}
-                <div className="col">
+                <div className="col-md-3">
                     <div className="card border-0 shadow-sm p-3 h-100 hover-shadow cursor-pointer rounded-3 text-center bg-white border" onClick={() => setTabActiva('perfil')}>
                         <div className="fs-2 text-dark mb-2"><i className="fa-solid fa-id-card-clip"></i></div>
                         <h6 className="fw-bold mb-1">Perfil</h6>
@@ -126,7 +126,7 @@ export default function AdminDashboard({
                     </div>
                 </div>
                 {/* Atajo Tienda */}
-                <div className="col">
+                <div className="col-md-3">
                     <Link to="/" className="card border-0 shadow-sm p-3 h-100 hover-shadow cursor-pointer rounded-3 text-center bg-white border text-decoration-none text-dark">
                         <div className="fs-2 text-success mb-2"><i className="fa-solid fa-store"></i></div>
                         <h6 className="fw-bold mb-1">Tienda</h6>
