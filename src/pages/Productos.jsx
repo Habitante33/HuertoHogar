@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
-import TarjetaProducto, { getEmojiPorCategoria, getShortLabel } from '../components/TarjetaProducto';
+import TarjetaProducto from '../components/TarjetaProducto';
 
 export default function Productos() {
     const { productos, categorias } = useContext(AppContext);
@@ -10,11 +10,19 @@ export default function Productos() {
     const [busqueda, setBusqueda] = useState('');
     const [categoriaActiva, setCategoriaActiva] = useState('Todos');
 
+    const getEmoji = (cat) => {
+        if (cat.includes("Fruta")) return "🍎";
+        if (cat.includes("Verdura")) return "🥬";
+        if (cat.includes("Orgánico") || cat.includes("Organico")) return "🍯";
+        if (cat.includes("Lácteo") || cat.includes("Lacteo")) return "🥛";
+        return "🥬"; // Por defecto
+    };
+
     const categoriasDisponibles = [
         { id: "Todos", label: "Todos" },
         ...categorias.map(cat => ({
             id: cat,
-            label: `${getEmojiPorCategoria(cat)} ${getShortLabel(cat)}`
+            label: `${getEmoji(cat)} ${cat.split(' ')[0]}`
         })),
         { id: "Ofertas", label: "🏷️ Ofertas" }
     ];
@@ -23,7 +31,7 @@ export default function Productos() {
     const productosFiltrados = productos.filter(p => {
         const coincideCategoria = 
             categoriaActiva === 'Todos' || 
-            (categoriaActiva === 'Ofertas' ? p.esOferta : getShortLabel(p.categoria) === getShortLabel(categoriaActiva));
+            (categoriaActiva === 'Ofertas' ? p.esOferta : p.categoria === categoriaActiva);
         const coincideBusqueda = 
             p.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
             p.id.toLowerCase().includes(busqueda.toLowerCase());

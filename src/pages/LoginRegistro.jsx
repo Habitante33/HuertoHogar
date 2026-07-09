@@ -4,7 +4,7 @@ import { AppContext } from '../context/AppContext';
 import { validarRUT, validarFormulario } from '../utils/validaciones';
 
 export default function LoginRegistro() {
-    const { usuarioSesion, login, registrarUsuario, regiones, mostrarNotificacion } = useContext(AppContext);
+    const { usuarioSesion, login, registrarUsuario, regiones } = useContext(AppContext);
     const navigate = useNavigate();
 
     // Redireccionar si ya tiene sesión iniciada
@@ -107,10 +107,7 @@ export default function LoginRegistro() {
         setLoginErrores(errores);
 
         if (esValido) {
-            const exito = login(loginValores['login-correo'].trim(), loginValores['login-contrasena']);
-            if (!exito) {
-                mostrarNotificacion('Correo o contraseña incorrectos.', 'error');
-            }
+            login(loginValores['login-correo'].trim(), loginValores['login-contrasena']);
         }
     };
 
@@ -135,7 +132,6 @@ export default function LoginRegistro() {
 
             const exito = registrarUsuario(nuevoUsuario);
             if (exito) {
-                mostrarNotificacion('Usuario registrado con éxito. Ahora puedes iniciar sesión.', 'success');
                 // Limpiar formulario y cambiar a tab login
                 setRegValores({
                     'reg-run': '',
@@ -149,8 +145,6 @@ export default function LoginRegistro() {
                 });
                 setRegErrores({});
                 setTabActivo('login');
-            } else {
-                mostrarNotificacion('Error: El RUN o correo electrónico ya se encuentra registrado.', 'error');
             }
         }
     };

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
 
@@ -7,13 +7,10 @@ export default function Carrito() {
         carrito, 
         productos, 
         eliminarDelCarrito, 
-        cambiarCantidadItem,
-        actualizarCantidadItem,
-        mostrarNotificacion
+        cambiarCantidadItem 
     } = useContext(AppContext);
 
     const navigate = useNavigate();
-    const [tempValues, setTempValues] = useState({});
 
     // Enlazar los items del carrito con los detalles del catálogo
     const itemsCompletos = carrito.map(item => {
@@ -112,60 +109,16 @@ export default function Carrito() {
                                                             >
                                                                 -
                                                             </button>
-                                                             <input 
-                                                                 type="text" 
-                                                                 className="form-control text-center" 
-                                                                 value={tempValues[item.id] !== undefined ? tempValues[item.id] : item.cantidad}
-                                                                 onChange={(e) => {
-                                                                     const val = e.target.value;
-                                                                     if (val === '' || /^\d+$/.test(val)) {
-                                                                         setTempValues(prev => ({ ...prev, [item.id]: val }));
-                                                                         const parsed = parseInt(val, 10);
-                                                                         if (!isNaN(parsed) && parsed > 0) {
-                                                                             const maxStock = item.producto.stock;
-                                                                             if (parsed > maxStock) {
-                                                                                 mostrarNotificacion(`Sólo quedan ${maxStock} unidades disponibles en el inventario.`, 'warning');
-                                                                                 actualizarCantidadItem(item.id, maxStock);
-                                                                                 setTempValues(prev => ({ ...prev, [item.id]: String(maxStock) }));
-                                                                             } else {
-                                                                                 actualizarCantidadItem(item.id, parsed);
-                                                                             }
-                                                                         }
-                                                                     }
-                                                                 }}
-                                                                 onBlur={() => {
-                                                                     const val = tempValues[item.id];
-                                                                     if (val !== undefined) {
-                                                                         const parsed = parseInt(val, 10);
-                                                                         if (isNaN(parsed) || parsed <= 0) {
-                                                                             actualizarCantidadItem(item.id, 1);
-                                                                         }
-                                                                         setTempValues(prev => {
-                                                                             const copy = { ...prev };
-                                                                             delete copy[item.id];
-                                                                             return copy;
-                                                                         });
-                                                                     }
-                                                                 }}
-                                                                 onKeyDown={(e) => {
-                                                                     if (e.key === 'Enter') {
-                                                                         e.target.blur();
-                                                                     }
-                                                                 }}
-                                                             />
+                                                            <input 
+                                                                type="text" 
+                                                                className="form-control text-center bg-white" 
+                                                                value={item.cantidad} 
+                                                                readOnly 
+                                                            />
                                                             <button 
                                                                 className="btn btn-outline-secondary" 
                                                                 type="button" 
-                                                                onClick={() => {
-                                                                    if (item.cantidad >= item.producto.stock) {
-                                                                        mostrarNotificacion('Ya no queda stock de este producto.', 'warning');
-                                                                    } else {
-                                                                        cambiarCantidadItem(item.id, 1);
-                                                                        if (item.cantidad + 1 === item.producto.stock) {
-                                                                            mostrarNotificacion('Ya no queda stock de este producto.', 'warning');
-                                                                        }
-                                                                    }
-                                                                }}
+                                                                onClick={() => cambiarCantidadItem(item.id, 1)}
                                                             >
                                                                 +
                                                             </button>
