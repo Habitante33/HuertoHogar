@@ -114,18 +114,29 @@ export default function AdminPanel() {
 
     const handleProdSubmit = (e) => {
         e.preventDefault();
+        
+        // Limpiar puntos y comas de los precios antes de validar y guardar (CLP es siempre entero)
+        const precioLimpio = prodForm.precio.toString().replace(/[\.,]/g, '');
+        const precioAnteriorLimpio = prodForm.precioAnterior ? prodForm.precioAnterior.toString().replace(/[\.,]/g, '') : '';
+        
+        const formParaValidar = {
+            ...prodForm,
+            precio: precioLimpio,
+            precioAnterior: precioAnteriorLimpio
+        };
+
         const reglas = {
             id: { required: true, minLength: 3 },
             nombre: { required: true, maxLength: 100 },
             categoria: { required: true },
-            precio: { required: true, custom: val => parseInt(val) >= 0 },
-            stock: { required: true, custom: val => parseInt(val) >= 0 && !val.includes('.') },
-            stockCritico: { custom: val => !val || (parseInt(val) >= 0 && !val.includes('.')) }
+            precio: { required: true, custom: val => !isNaN(parseInt(val)) && parseInt(val) >= 0 },
+            stock: { required: true, custom: val => parseInt(val) >= 0 && !val.toString().includes('.') },
+            stockCritico: { custom: val => !val || (parseInt(val) >= 0 && !val.toString().includes('.')) }
         };
         if (prodForm.esOferta) {
-            reglas.precioAnterior = { required: true, custom: val => parseInt(val) > parseInt(prodForm.precio) };
+            reglas.precioAnterior = { required: true, custom: val => !isNaN(parseInt(val)) && parseInt(val) > parseInt(precioLimpio) };
         }
-        const { errores, esValido } = validarFormulario(prodForm, reglas);
+        const { errores, esValido } = validarFormulario(formParaValidar, reglas);
         setProdErrors(errores);
 
         if (esValido) {
@@ -133,13 +144,13 @@ export default function AdminPanel() {
                 id: prodForm.id.trim().toUpperCase(),
                 nombre: prodForm.nombre.trim(),
                 categoria: prodForm.categoria,
-                precio: parseInt(prodForm.precio),
+                precio: parseInt(precioLimpio),
                 stock: parseInt(prodForm.stock),
                 stockCritico: parseInt(prodForm.stockCritico) || 0,
                 descripcion: prodForm.descripcion.trim() || 'Sin descripción.',
                 imagen: prodForm.imagen,
                 esOferta: prodForm.esOferta,
-                precioAnterior: prodForm.esOferta ? parseInt(prodForm.precioAnterior) : null,
+                precioAnterior: prodForm.esOferta ? parseInt(precioAnteriorLimpio) : null,
                 origen: 'Nacional'
             };
             const exito = editingProdId ? editarProducto(editingProdId, prodData) : crearProducto(prodData);

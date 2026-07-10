@@ -35,7 +35,7 @@ export default function AdminCategories({
                                         type="text" 
                                         id="nueva-cat" 
                                         className="form-control" 
-                                        placeholder="Ej: Panadería Orgánica"
+                                        placeholder="Ej: Semillas"
                                         value={nuevaCatNombre}
                                         onChange={(e) => setNuevaCatNombre(e.target.value)}
                                     />

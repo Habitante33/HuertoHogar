@@ -185,9 +185,10 @@ export default function AdminProducts({
                                             <div className="col-md-6">
                                                 <label className="form-label small fw-bold">Precio Unitario ($ CLP) *</label>
                                                 <input 
-                                                    type="number" 
+                                                    type="text" 
                                                     className={`form-control form-control-sm ${prodErrors.precio ? 'is-invalid' : ''}`}
                                                     id="precio" 
+                                                    placeholder="Ej: 6000 o 6.000"
                                                     value={prodForm.precio}
                                                     onChange={handleProdChange}
                                                 />
@@ -237,9 +238,10 @@ export default function AdminProducts({
                                                 <div className="col-md-6">
                                                     <label className="form-label small fw-bold">Precio Anterior ($ CLP) *</label>
                                                     <input 
-                                                        type="number" 
+                                                        type="text" 
                                                         className={`form-control form-control-sm ${prodErrors.precioAnterior ? 'is-invalid' : ''}`}
                                                         id="precioAnterior" 
+                                                        placeholder="Ej: 8000 o 8.000"
                                                         value={prodForm.precioAnterior}
                                                         onChange={handleProdChange}
                                                     />

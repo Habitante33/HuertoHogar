@@ -11,6 +11,7 @@ export default function AdminDashboard({
     mostrarNotificacion 
 }) {
     const totalClientes = usuarios.filter(u => u.tipo === 'Cliente').length;
+    const totalVentas = ordenes.reduce((sum, o) => sum + (o.total || 0), 0);
 
     return (
         <div>
@@ -26,12 +27,12 @@ export default function AdminDashboard({
                     <div className="card text-white border-0 shadow-sm p-3 h-100 rounded-3" style={{ background: 'linear-gradient(135deg, #1e90ff, #0052cc)' }}>
                         <div className="d-flex justify-content-between align-items-start">
                             <div>
-                                <p className="mb-1 text-uppercase fw-bold small text-white-50">Compras</p>
-                                <h2 className="fw-bold mb-0">{(ordenes.length + 1200).toLocaleString()}</h2>
+                                <p className="mb-1 text-uppercase fw-bold small text-white-50">Ventas</p>
+                                <h2 className="fw-bold mb-0">${totalVentas.toLocaleString("es-CL")}</h2>
                             </div>
-                            <span className="fs-1 text-white-50"><i className="fa-solid fa-cart-shopping"></i></span>
+                            <span className="fs-1 text-white-50"><i className="fa-solid fa-money-bill-trend-up"></i></span>
                         </div>
-                        <p className="small mb-0 mt-3 pt-2 border-top border-white-10">Probabilidad de aumento: 20%</p>
+                        <p className="small mb-0 mt-3 pt-2 border-top border-white-10">Pedidos procesados: {ordenes.length}</p>
                     </div>
                 </div>
 

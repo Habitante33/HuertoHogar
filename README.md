@@ -84,3 +84,9 @@ HuertoHogar/
     │   └── storageService.js        ← Abstracción genérica de operaciones CRUD de LocalStorage
     └── utils/
         └── validaciones.js          ← Validación matemática del RUN chileno (Módulo 11)
+```
+
+# Desarrolladores
+# Jorge Silva
+# Allen Navarrete
+

@@ -18,11 +18,19 @@ export default function Productos() {
         return "🥬"; // Por defecto
     };
 
+    const formatCategoryLabel = (cat) => {
+        if (cat === "Frutas Frescas") return "Frutas";
+        if (cat === "Verduras Orgánicas") return "Verduras";
+        if (cat === "Productos Orgánicos") return "Orgánicos";
+        if (cat === "Productos Lácteos") return "Lácteos";
+        return cat;
+    };
+
     const categoriasDisponibles = [
         { id: "Todos", label: "Todos" },
         ...categorias.map(cat => ({
             id: cat,
-            label: `${getEmoji(cat)} ${cat.split(' ')[0]}`
+            label: `${getEmoji(cat)} ${formatCategoryLabel(cat)}`
         })),
         { id: "Ofertas", label: "🏷️ Ofertas" }
     ];
