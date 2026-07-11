@@ -49,16 +49,14 @@ export default function Productos() {
 
     return (
         <div className="container py-5">
-            {/* Breadcrumbs */}
-            <div className="row mb-3">
-                <div className="col-12">
-                    <nav aria-label="breadcrumb">
-                        <ol className="breadcrumb">
-                            <li className="breadcrumb-item"><Link to="/" className="text-success text-decoration-none">Inicio</Link></li>
-                            <li className="breadcrumb-item active" aria-current="page">Catálogo de Productos</li>
-                        </ol>
-                    </nav>
-                </div>
+            {/* Header de Sección */}
+            <div className="text-center mb-5">
+                <h1 className="display-5 fw-bold mb-2" style={{ color: 'var(--hh-secondary)' }}>
+                    Nuestro Catálogo
+                </h1>
+                <p className="text-muted fs-6">
+                    Filtra por categoría o busca tu producto favorito. Agrégalo al carrito en un clic.
+                </p>
             </div>
 
             {/* Fila de Filtros y Búsqueda (Fusión Horizontal Estética) */}

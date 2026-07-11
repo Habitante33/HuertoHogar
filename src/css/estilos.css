@@ -444,6 +444,7 @@ a.text-decoration-none:hover {
 /* SMOOTH SCROLL */
 html {
     scroll-behavior: smooth;
+    font-size: 18px; /* Escala base: sube toda la tipografía rem proporcionalmente */
 }
 
 /* SELECTION */

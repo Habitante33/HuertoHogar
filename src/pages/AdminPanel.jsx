@@ -397,6 +397,7 @@ export default function AdminPanel() {
                             totalStockFisico={totalStockFisico} 
                             rolSimulado={rolSimulado} 
                             setTabActiva={setTabActiva} 
+                            setSoloCriticos={setSoloCriticos}
                             mostrarNotificacion={mostrarNotificacion} 
                         />
                     )}

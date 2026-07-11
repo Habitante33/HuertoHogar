@@ -8,10 +8,12 @@ export default function AdminDashboard({
     totalStockFisico, 
     rolSimulado, 
     setTabActiva, 
+    setSoloCriticos,
     mostrarNotificacion 
 }) {
     const totalClientes = usuarios.filter(u => u.tipo === 'Cliente').length;
     const totalVentas = ordenes.reduce((sum, o) => sum + (o.total || 0), 0);
+    const productosConStockCritico = productos.filter(p => p.stock <= p.stockCritico).length;
 
     return (
         <div>
@@ -67,12 +69,19 @@ export default function AdminDashboard({
 
             {/* Grilla de 8 Atajos Directos */}
             <div className="row g-3">
-                {/* Atajo Dashboard */}
+                {/* Atajo Stock Crítico */}
                 <div className="col-md-3">
-                    <div className="card border-0 shadow-sm p-3 h-100 hover-shadow cursor-pointer rounded-3 text-center bg-white border" onClick={() => setTabActiva('dashboard')}>
-                        <div className="fs-2 text-info mb-2"><i className="fa-solid fa-gauge-high"></i></div>
-                        <h6 className="fw-bold mb-1">Dashboard</h6>
-                        <p className="text-muted small mb-0">Vista general de todas las métricas y estadísticas.</p>
+                    <div className="card border-0 shadow-sm p-3 h-100 hover-shadow cursor-pointer rounded-3 text-center bg-white border" onClick={() => {
+                        if (setSoloCriticos) setSoloCriticos(true);
+                        setTabActiva('productos');
+                    }}>
+                        <div className="fs-2 text-danger mb-2"><i className="fa-solid fa-triangle-exclamation"></i></div>
+                        <h6 className="fw-bold mb-1">Stock Crítico</h6>
+                        <p className="text-muted small mb-0">
+                            {productosConStockCritico > 0
+                                ? <span className="text-danger fw-bold">{productosConStockCritico} producto(s) en estado crítico.</span>
+                                : 'Sin alertas de inventario.'}
+                        </p>
                     </div>
                 </div>
                 {/* Atajo Ordenes */}
